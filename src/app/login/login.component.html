@@ -1,0 +1,66 @@
+
+  <div class="container">  
+      <div class="row"> 
+        <div class="col-sm-6">
+          <div class="video-container">
+            <video id="my-video w-100" autoplay muted loop>
+              <source src="assets\videos\videologin.mp4" type="video/mp4">
+            </video>
+            <a id="mute-btn" type="button" (click)="muteVideo()">
+              <i class="bi bi-volume-mute">
+                <img src="assets\icones sistema\muted.png">
+              </i>
+            </a>          
+          </div>
+        </div>
+
+        <div class="col-sm-6">
+          <div class="login">
+            <form class="login__form" (ngSubmit)="validarLogin()" #loginForm="ngForm">
+                <img class="imagem-logo" src="assets\logo\Barsoft\default_transparent_1000x1000.png">
+              <div class="form-group">
+                <input type="text" placeholder="Usuário" class="login__input" id="username" [(ngModel)]="username" required name="username" required #usernameInput="ngModel" (focus)="mensagem = ''">
+              </div>
+              <div class="form-group">
+                <input type="password" placeholder="Senha" class="login__input mt-5" id="password" [(ngModel)]="password" required name="password" required #passwordInput="ngModel" (focus)="mensagem = '' ">
+              </div>
+              <div class="row justify-content-md-center">
+                <div class="col-md-auto">
+                  <button type="submit" class="login__button mt-5">Entrar</button>
+                </div>
+                <div class="col-md-auto">
+                  <button type="button" class="login__button_limpar mt-5" (click)="loginForm.reset()">Limpar</button>
+                </div>
+              </div>
+              <div *ngIf="carregando" class="animacao-espera mt-3" align="center">
+                <!-- Adicione aqui a sua animação de espera -->
+                <div class="spinner" *ngIf="aguardandoResposta">
+                  <div class="spinner2"></div>
+                </div>
+            </div> 
+            </form> 
+          </div>
+        </div>
+        <div *ngIf="esconderDiv2">
+          <div *ngIf="mensagem" class="alerta" role="alert" >
+            <div class="alerta-mensagem" id="alerta-mensagem" *ngIf="esconderDiv">
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ mensagem }}
+                <div>
+                  <button type="button" class="btn-close" data-dismiss="alert" aria-label="Fechar" (click)="fecharAlerta()"></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  </div>
+
+
+
+
+
+        
+  
+
+
+  
