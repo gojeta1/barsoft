@@ -1,0 +1,41 @@
+
+  .navbar-brand {
+    padding: 0;
+    margin-top: -20px;
+    margin-bottom: -20px;
+}
+  
+  .navbar-brand img {
+    height: 50px;
+  }
+
+  .icon-link img{
+    height: 40px;
+  }
+
+  .nav-icon{
+    height: 30px;
+  }
+
+  .whatsapp-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background-color: #24934d;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 38px;
+    color: #fff;
+    z-index: 9999;
+    transition: all 0.3s ease;
+  }
+  
+  .whatsapp-button:hover {
+    background-color: #128c7e;
+    color: #fff;
+    transform: scale(1.1);
+  }
+  
+  
