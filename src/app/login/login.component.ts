@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { __values } from 'tslib';
-
-
+import { AuthenticationService } from '../authentication.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -17,21 +17,29 @@ export class LoginComponent {
   password: string = '' ;
   mensagem: string = '';
 
-
-  validarLogin(): void {
+  constructor(private authenticationService: AuthenticationService, private router: Router) {}
+  
+  login(): void {
     
     this.aguardandoResposta = true;
     this.carregando = true;
     this.esconderDiv = true;
     this.esconderDiv2 = true;
 
-    if (!this.username || !this.password) {
-      this.mensagem = 'Por favor, preencha todos os campos.';
-      this.carregando = false;
-      return;
-    }
 
-}
+    this.authenticationService.login(this.username, this.password).subscribe(
+      () => {
+        console.log('Usuário autenticado com sucesso');
+        // Redirecionar para a página home
+        this.router.navigateByUrl('/home');
+        this.carregando = false;
+        this.aguardandoResposta = false;
+      },
+      err => {
+        console.log('Erro ao autenticar usuário:', err);
+      }
+    );
+  }
   // Logica do botão de mutar o vídeo da tela de login
 
   video!: HTMLVideoElement;
