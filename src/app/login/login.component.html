@@ -16,7 +16,7 @@
 
         <div class="col-sm-6">
           <div class="login">
-            <form class="login__form" (ngSubmit)="validarLogin()" #loginForm="ngForm">
+            <form class="login__form" (ngSubmit)="login()" #loginForm="ngForm">
                 <img class="imagem-logo" src="assets\logo\Barsoft\default_transparent_1000x1000.png">
               <div class="form-group">
                 <input type="text" placeholder="Usuário" class="login__input" id="username" [(ngModel)]="username" required name="username" required #usernameInput="ngModel" (focus)="mensagem = ''">
