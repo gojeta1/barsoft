@@ -5,6 +5,7 @@ import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
 import { Observable, of } from 'rxjs';
 import { Token } from '@angular/compiler';
 import { Route } from '@angular/router';
+import { jwtOptionsFactory } from './app.module';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ import { Route } from '@angular/router';
 export class AuthenticationService {
 
   //private apiUrl = 'assets/users.json';
-  private apiUrl = 'http://localhost:3000/login';
+  private apiUrl = 'http://localhost:4200/login';
   private tokenKey = 'my-app-token';
 
   constructor(private http: HttpClient, public jwtHelper: JwtHelperService){ }
@@ -27,18 +28,22 @@ export class AuthenticationService {
         })
       );
   }
+  
 
   logout() : void {
     localStorage.removeItem(this.tokenKey);
   }
       getToken() {
-        return localStorage.getItem(this.tokenKey);
-
+        if (!this.tokenKey) {
+          localStorage.getItem(this.tokenKey);
+        }
+        return this.tokenKey;
       }
-    
-      isAuthenticated(): boolean {
+      
+      
+      isAuthenticated() {
         const token = this.getToken();
-        return token != null;
+        return false;
       }
    
     //  return this.http.get<{users: any []}>(`${this.apiUrl}/login`).pipe(
