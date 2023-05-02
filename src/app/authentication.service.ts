@@ -6,46 +6,33 @@ import { Observable, of } from 'rxjs';
 import { Token } from '@angular/compiler';
 import { Route } from '@angular/router';
 import { jwtOptionsFactory } from './app.module';
+import { LoginComponent } from './login/login.component';
+
+interface LoginResponse {
+  token: string;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
 
-  //private apiUrl = 'assets/users.json';
-  private apiUrl = 'http://localhost:4200/login';
-  private tokenKey = 'my-app-token';
+  private apiUrl = 'http://localhost:3000/api';
 
-  constructor(private http: HttpClient, public jwtHelper: JwtHelperService){ }
-
-  login(username: string, password: string): Observable<{token: string}> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    const data = { username: username, password: password };
-    return this.http.post<any>(this.apiUrl, data, {headers})
-      .pipe(
-        tap(response => {
-         localStorage.setItem(this.tokenKey, response.token);
-        })
-      );
-  }
+  constructor(private http: HttpClient) { }
   
 
-  logout() : void {
-    localStorage.removeItem(this.tokenKey);
+  login(username: string, password: string): Observable<LoginResponse> {
+    const body = { username, password };
+
+    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, body);
   }
-      getToken() {
-        if (!this.tokenKey) {
-          localStorage.getItem(this.tokenKey);
-        }
-        return this.tokenKey;
-      }
+
+  isLoggedin(){
+    
+  }
+}
       
-      
-      isAuthenticated() {
-        const token = this.getToken();
-        return false;
-      }
-   
     //  return this.http.get<{users: any []}>(`${this.apiUrl}/login`).pipe(
       //  map(result => { 
       //    const user = result.users.find(u => u.username === username && u.password === password);
@@ -57,4 +44,3 @@ export class AuthenticationService {
           
    // })
    // );
-}
