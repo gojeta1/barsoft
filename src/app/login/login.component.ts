@@ -16,6 +16,7 @@ export class LoginComponent {
   username: string = '' ;
   password: string = '' ;
   mensagem: string = '';
+  loginForm: any;
 
   constructor(private authenticationService: AuthenticationService, private router: Router) {}
   
@@ -26,19 +27,13 @@ export class LoginComponent {
     this.esconderDiv = true;
     this.esconderDiv2 = true;
 
-
-    this.authenticationService.login(this.username, this.password).subscribe(
-      () => {
+    this.authenticationService.login(this.username, this.password)
         console.log('Usuário autenticado com sucesso');
         // Redirecionar para a página home
         this.router.navigateByUrl('/home');
         this.carregando = false;
         this.aguardandoResposta = false;
-      },
-      err => {
-        console.log('Erro ao autenticar usuário:', err);
-      }
-    );
+  
   }
   // Logica do botão de mutar o vídeo da tela de login
 
