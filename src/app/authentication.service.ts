@@ -17,7 +17,7 @@ interface LoginResponse {
 })
 export class AuthenticationService {
 
-  private apiUrl = 'http://localhost:3000/api';
+  private apiUrl = 'http://localhost:3000/';
 
   constructor(private http: HttpClient) { }
   
@@ -28,9 +28,6 @@ export class AuthenticationService {
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, body);
   }
 
-  isLoggedin(){
-    
-  }
 }
       
     //  return this.http.get<{users: any []}>(`${this.apiUrl}/login`).pipe(
