@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 
 const JWT_SECRET = 'my-secret';
 
-app.post('/api/login', (req, res) => {
+app.post('/login', (req, res) => {
   const { username, password } = req.body;
 
   const user = users.users.find((u) => u.username === username && u.password === password);
