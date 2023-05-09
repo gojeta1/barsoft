@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { AuthenticationService } from '../authentication.service';
 
 @Component({
   selector: 'app-home',
@@ -8,8 +9,13 @@ import { HttpClient } from '@angular/common/http';
 })
 export class HomeComponent {
 
-  constructor(private http: HttpClient) {}
 
-  
+  constructor(private authenticationService: AuthenticationService) {
+     
+  }
+
+  logout(){
+    this.authenticationService.logout();
+  }
 
 }
