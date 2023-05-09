@@ -8,7 +8,15 @@ import { tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 
-export class AuthGuard {
+export class AuthGuard implements CanActivate {
   constructor(private authenticationService: AuthenticationService, private router: Router) {}
 
+  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+    if (this.authenticationService.isLoggedIn()) {
+      return true;
+    } else {
+      this.router.navigate(['/login']);
+      return false;
+    }
+  }
 }
