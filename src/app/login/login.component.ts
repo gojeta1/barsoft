@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { __values } from 'tslib';
 import { AuthenticationService } from '../authentication.service';
 import { Router } from '@angular/router';
+import { filter, tap } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -17,24 +20,22 @@ export class LoginComponent {
   password: string = '' ;
   mensagem: string = '';
   loginForm: any;
+  esconderDiv: boolean = true ;
+  esconderDiv2: boolean = true;
+  error: string = '';
 
   constructor(private authenticationService: AuthenticationService, private router: Router) {}
   
-  login(): void {
+  login() {
     
     this.aguardandoResposta = true;
     this.carregando = true;
-    this.esconderDiv = true;
-    this.esconderDiv2 = true;
+
 
     this.authenticationService.login(this.username, this.password)
-        console.log('Usuário autenticado com sucesso');
-        // Redirecionar para a página home
-        this.router.navigateByUrl('/home');
-        this.carregando = false;
-        this.aguardandoResposta = false;
-  
+    
   }
+
   // Logica do botão de mutar o vídeo da tela de login
 
   video!: HTMLVideoElement;
@@ -48,13 +49,12 @@ export class LoginComponent {
     this.isMuted = !this.isMuted;
     this.video.muted = this.isMuted;
   }
-
-  esconderDiv:boolean = true;
-  esconderDiv2:boolean = true;
   
   fecharAlerta(){
       this.esconderDiv = false;
       this.esconderDiv2 = false;
+      this.aguardandoResposta = false;
+      this.carregando = false;
   }
 
 }
