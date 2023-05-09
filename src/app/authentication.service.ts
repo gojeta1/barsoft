@@ -33,7 +33,15 @@ export class AuthenticationService {
     });
   }
   logout() {
-    localStorage.removeItem('token');
+      // Remove as credenciais de autenticação do armazenamento local
+      localStorage.removeItem('username');
+      localStorage.removeItem('token');
+  
+      // Chama a API de logout do servidor
+      this.http.post(`${this.apiUrl}/logout`, {}).subscribe(() => {
+        // Redireciona o usuário de volta para a tela de login
+        this.router.navigate(['/login']);
+      });
   }
 
   isLoggedIn() {
