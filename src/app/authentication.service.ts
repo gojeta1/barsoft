@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, tap } from 'rxjs/operators';
 import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
-import { Observable, of } from 'rxjs';
+import { Observable, TimeoutError, of } from 'rxjs';
 import { Token } from '@angular/compiler';
-import { Route } from '@angular/router';
+import { Route, Router } from '@angular/router';
 import { jwtOptionsFactory } from './app.module';
 import { LoginComponent } from './login/login.component';
 
 interface LoginResponse {
-  token: string;
+  token: string
 }
 
 @Injectable({
@@ -17,27 +17,31 @@ interface LoginResponse {
 })
 export class AuthenticationService {
 
-  private apiUrl = 'http://localhost:3000/';
+  private apiUrl = 'http://localhost:3000';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
   
 
-  login(username: string, password: string): Observable<LoginResponse> {
+  login(username: string, password: string) {
     const body = { username, password };
-
-    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, body);
+     return this.http.post<any>(`${this.apiUrl}/login`, body)
+    .subscribe(response =>{
+      if(response.success === true){
+        console.log('logado')
+        this.router.navigate(['/home'])
+      }
+    });
+  }
+  logout() {
+    localStorage.removeItem('token');
   }
 
+  isLoggedIn() {
+    return localStorage.getItem('token') !== null;
+  }
+
+  getToken() {
+    return localStorage.getItem('token');
+  }
 }
-      
-    //  return this.http.get<{users: any []}>(`${this.apiUrl}/login`).pipe(
-      //  map(result => { 
-      //    const user = result.users.find(u => u.username === username && u.password === password);
-      //    if (user){
-      //      return user !== undefined;
-      //    }else{
-     //       throw new Error('Usuário ou senha Incorretos');
-      //    }
-          
-   // })
-   // );
+
