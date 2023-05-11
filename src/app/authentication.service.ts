@@ -18,6 +18,8 @@ interface LoginResponse {
 export class AuthenticationService {
 
   private apiUrl = 'http://localhost:3000';
+  private isLoggedin: boolean = false;
+  nomeUsuario: string ='';
 
   constructor(private http: HttpClient, private router: Router) { }
   
@@ -28,23 +30,18 @@ export class AuthenticationService {
     .subscribe(response =>{
       if(response.success === true){
         console.log('logado')
+        this.isLoggedin = true;
         this.router.navigate(['/home'])
       }
     });
   }
-  logout() {
-      // Remove as credenciais de autenticação do armazenamento local
-      localStorage.removeItem('username');
-      localStorage.removeItem('token');
-  
-      // Chama a API de logout do servidor
-      this.http.post(`${this.apiUrl}/logout`, {}).subscribe(() => {
-        // Redireciona o usuário de volta para a tela de login
-        this.router.navigate(['/login']);
-      });
+ 
+  getNomeUsuarioLogado() {
+ 
   }
 
-  isLoggedIn() {
+  isLoggedIn(): boolean {
+    return this.isLoggedin;
     return localStorage.getItem('token') !== null;
   }
 
