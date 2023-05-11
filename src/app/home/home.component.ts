@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AuthenticationService } from '../authentication.service';
 import { Router } from '@angular/router';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-home',
@@ -11,14 +12,15 @@ import { Router } from '@angular/router';
 export class HomeComponent implements OnInit{
 
     nomeUsuarioLogado: string ='';
+ 
 
   constructor(private authenticationService: AuthenticationService, private htpp: HttpClient) {}
 
   ngOnInit(): void {
     this.authenticationService.getNomeUsuarioLogado()
   }
-
   
+
   }
 
  
