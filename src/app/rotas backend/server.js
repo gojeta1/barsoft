@@ -3,6 +3,8 @@ const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const app = express();
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
+
 
 app.use(cors());
 // Configurando o body-parser
@@ -39,6 +41,8 @@ app.post('/login', (req, res) => {
     }
   });
 });
+
+
 
 // Iniciando o servidor
 app.listen(3000, () => {
