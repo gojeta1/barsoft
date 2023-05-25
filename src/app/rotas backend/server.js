@@ -4,6 +4,9 @@ const bodyParser = require('body-parser');
 const app = express();
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const { resolve } = require('path');
+const { rejects } = require('assert');
 
 
 app.use(cors());
@@ -28,20 +31,61 @@ connection.connect(function(err) {
 // Criando a rota de login
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
+
+  if (!username || !password) {
+    res.status(400).json({ message: 'Por favor, preencha todos os campos' });
+    return;
+  }
+  
   // Consultando o banco de dados
   connection.query('SELECT * FROM users WHERE username = ? AND password = ?', [username, password], function(err, results, fields) {
     if (err) {
-      console.log(err);
-      res.status(500).send('Erro interno no servidor.');
+      console.log('Erro ao consultar banco de dados:',err);
+      res.status(500).json({ message: 'Erro ao autenticar' });
+      return;
     } else if (results.length > 0) {
       res.status(200);
       res.json({ success: true, message: 'Login Realizado com sucesso'});
     } else {
-      res.status(401).send('Usuário ou senha incorretos.');
+      res.status(401).json({ message: 'Usuário ou senha incorretos' });
     }
   });
 });
 
+app.get('/user/:userId', function(req, res) {
+  const userId = req.params.userId;
+  
+  connection.query('SELECT nome FROM users WHERE id = ?', [userId], (error, results) => {
+    if (error) {
+      res.status(500).send('Internal Server Error');
+    } else {
+      if(results.length > 0){
+        const nome = results[0].nome;
+        return res.status(200).json({ nome: nome });
+      }else{
+        res.status(404).send('Usuário não encontrado');
+      }
+
+    }
+  });
+});
+
+app.get('/user', (req, res) => {
+  const {username, password} = req.body;
+  connection.query('SELECT id FROM users WHERE username = ? AND password = ?' [username, password], (error, results => {
+    if (error) {
+      console.error('Erro ao consultar o banco de dados:', error);
+      res.status(500).send('Erro ao consultar o banco de dados');
+    } else if (results.length === 0) {
+      console.warn(`Usuário não encontrado ou senha incorreta para o usuário ${username}`);
+      res.status(401).send('Usuário não encontrado ou senha incorreta');
+    } else {
+      const userId = results[0].id;
+      res.send({ userId });
+    }
+  }));
+
+});
 
 
 // Iniciando o servidor
