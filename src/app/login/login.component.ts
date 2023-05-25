@@ -2,8 +2,10 @@ import { Component } from '@angular/core';
 import { __values } from 'tslib';
 import { AuthenticationService } from '../authentication.service';
 import { Router } from '@angular/router';
-import { filter, tap } from 'rxjs';
+import { Observable, filter, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { NotificationService } from '../notification.service';
+
 
 @Component({
   selector: 'app-login',
@@ -18,23 +20,30 @@ export class LoginComponent {
   carregando: boolean = false;
   username: string = '' ;
   password: string = '' ;
-  mensagem: string = '';
-  loginForm: any;
-  esconderDiv: boolean = true ;
-  esconderDiv2: boolean = true;
-  error: string = '';
+  isLoggedin = false;
+  userId: number = 0;
+  notification: string = '';
 
-  constructor(private authenticationService: AuthenticationService, private router: Router) {}
+  constructor(private authenticationService: AuthenticationService, private router: Router, private notificationService: NotificationService) {}
   
+  ngOnInit() {
+    this.notificationService.notification$.subscribe((message) => {
+      this.notification = message;
+      this.aguardandoResposta = false;
+      this.carregando = false;
+    });
+  }
+
   login() {
     
+    this.notification = ''; // Limpar notificação anterior
     this.aguardandoResposta = true;
     this.carregando = true;
-
-
-    this.authenticationService.login(this.username, this.password)
     
+     this.authenticationService.login(this.username, this.password)
+
   }
+
 
   // Logica do botão de mutar o vídeo da tela de login
 
@@ -51,10 +60,8 @@ export class LoginComponent {
   }
   
   fecharAlerta(){
-      this.esconderDiv = false;
-      this.esconderDiv2 = false;
-      this.aguardandoResposta = false;
-      this.carregando = false;
+
   }
+
 
 }
