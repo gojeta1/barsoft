@@ -7,6 +7,7 @@ import { Token } from '@angular/compiler';
 import { Route, Router } from '@angular/router';
 import { jwtOptionsFactory } from './app.module';
 import { LoginComponent } from './login/login.component';
+import { NotificationService } from './notification.service';
 
 interface LoginResponse {
   token: string
@@ -18,31 +19,48 @@ interface LoginResponse {
 export class AuthenticationService {
 
   private apiUrl = 'http://localhost:3000';
-  private isLoggedin: boolean = false;
+ 
   nomeUsuario: string ='';
+  isLoggedin = false;
+  aguardandoResposta = true;
+  carregando = true;
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router, private notificationService: NotificationService) { }
   
 
-  login(username: string, password: string) {
-    const body = { username, password };
-     return this.http.post<any>(`${this.apiUrl}/login`, body)
-    .subscribe(response =>{
-      if(response.success === true){
-        console.log('logado')
-        this.isLoggedin = true;
-        this.router.navigate(['/home'])
+  login(username: string, password: string){
+
+     this.http.post<any>(`${this.apiUrl}/login`, {username, password}).subscribe(
+      (response) => {
+        console.log(response.message);
+
+        // Armazene o token localmente
+        localStorage.setItem('token', response.token);
+
+        // Faça o que for necessário após o login bem-sucedido
+        if(response.success === true){
+          console.log('logado')
+          this.router.navigate(['/home'])
+          this.isLoggedin = true;
+          return response;
+          }
+      },
+      (error) => {
+        console.error('Erro ao fazer login:', error);
+        this.notificationService.notify(error.error.message);
+        // Lide com o erro de login
       }
-    });
+    );
+    
   }
  
-  getNomeUsuarioLogado() {
- 
+
+  isLoggedIn(): boolean{
+    return !!localStorage.getItem('token');
   }
 
-  isLoggedIn(): boolean {
-    return this.isLoggedin;
-    return localStorage.getItem('token') !== null;
+  getNomeUsuarioLogado(userId: number) {
+    return this.http.get<any>(`${this.apiUrl}/user/${userId}`)
   }
 
   getToken() {
