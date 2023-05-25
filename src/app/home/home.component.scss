@@ -80,6 +80,7 @@ body {
  .btn-toggle-nav a:hover,
  .btn-toggle-nav a:focus {
    background-color: #243a1e;
+   
  }
  
  .scrollarea {
@@ -156,6 +157,11 @@ body {
 
 .sidebar-footer>a:last-child {
   border-right: none;
+}
+
+.content {
+  position: relative;
+  /* Estilos adicionais do conteúdo */
 }
 
  @media (min-width: 768px) {
