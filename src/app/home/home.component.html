@@ -71,26 +71,31 @@
 </svg>
 
 <main>
-  <h1 class="visually-hidden">Sidebars examples</h1>
 
-  <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280px;">
+  <div class="d-flex flex-column flex-shrink-0 p-3 text-white sidebar" style="width: 280px;">
     <div class="dropdown">
         <ul class="nav nav-pills flex-column mb-auto">
             <li class="mb-1">
-                <button href="#" class="btn btn-toggle align-items-center rounded collapsed text-white" id="dropdownUser1" data-bs-toggle="collapse" data-bs-target="#profile-collapse" aria-expanded="false">
+                <a class=" align-items-center text-white" id="dropdownUser1"  aria-expanded="false">
                 <img src="\assets\jhon\user.jpg" alt="" width="32" height="32" class="rounded-circle me-2">
                     <span class="user-status">
                     <i class="fas fa-circle"></i>
                     </span>
-                    <strong>Guilherme</strong>
-                </button>   
-        <div class="collapse" id="profile-collapse">
-            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                <li><a class="link-dark rounded text-white" >Configurações</a></li>
-                <li><a class="link-dark rounded text-white">Perfil</a></li>
-                <li><a class="link-dark rounded text-white" href="#">Sair</a></li>
-            </ul>
-        </div>
+                    <label>Bem-vindo, {{nomeUsuario}}</label>
+                  </a>   
+                  <div class="sidebar-footer">
+                    <a href="#">
+                      <i class="fa fa-bell"></i>
+                      <span class="badge badge-pill badge-warning notification">3</span>
+                    </a>
+                    <a href="#">
+                      <i class="fa fa-cog"></i>
+                      <span class="badge-sonar"></span>
+                    </a>
+                    <a href="#">
+                      <i class="fa fa-power-off"></i>
+                    </a>
+                  </div>
             </li>
         </ul> 
       </div>
@@ -103,38 +108,38 @@
         </button>
         <div class="collapse" id="dashboard-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li><a href="#" class="link-dark rounded text-white">Overview</a></li>
-            <li><a href="#" class="link-dark rounded text-white">Weekly</a></li>
-            <li><a href="#" class="link-dark rounded text-white">Monthly</a></li>
-            <li><a href="#" class="link-dark rounded text-white">Annually</a></li>
+            <li><a  class="link-dark rounded text-white">Geral</a></li>
+            <li><a  class="link-dark rounded text-white">Semanal</a></li>
+            <li><a  class="link-dark rounded text-white">Mensal</a></li>
+            <li><a  class="link-dark rounded text-white">Anual</a></li>
           </ul>
         </div>
       </li>
       <li class="mb-1">
         <button class="btn btn-toggle align-items-center rounded collapsed text-white" data-bs-toggle="collapse" data-bs-target="#orders-collapse" aria-expanded="false">
             <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"/></svg>
-          Orders
+          Cadastros
         </button>
         <div class="collapse" id="orders-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li><a href="#" class="link-dark rounded text-white">New</a></li>
-            <li><a href="#" class="link-dark rounded text-white">Processed</a></li>
-            <li><a href="#" class="link-dark rounded text-white">Shipped</a></li>
-            <li><a href="#" class="link-dark rounded text-white">Returned</a></li>
+            <li><a href="#" class="link-dark rounded text-white">Produtos</a></li>
+            <li><a href="#" class="link-dark rounded text-white">Fornecedores</a></li>
+            <li><a href="#" class="link-dark rounded text-white">Clientes</a></li>
+            <li><a href="#" class="link-dark rounded text-white">Contas a Pagar</a></li>
           </ul>
         </div>
       </li>
       <li class="mb-1">
         <button class="btn btn-toggle align-items-center rounded collapsed text-white" data-bs-toggle="collapse" data-bs-target="#products-collapse" aria-expanded="false">
             <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"/></svg>
-          Produtos
+          Estoque
         </button>
         <div class="collapse" id="products-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li><a href="#" class="link-dark rounded text-white">New</a></li>
-            <li><a href="#" class="link-dark rounded text-white">Processed</a></li>
-            <li><a href="#" class="link-dark rounded text-white">Shipped</a></li>
-            <li><a href="#" class="link-dark rounded text-white">Returned</a></li>
+            <li><a href="#" class="link-dark rounded text-white">Movimentação</a></li>
+            <li><a href="#" class="link-dark rounded text-white">Produtos</a></li>
+            <li><a href="#" class="link-dark rounded text-white">Deposito</a></li>
+            <li><a href="#" class="link-dark rounded text-white">Unidade de Medida</a></li>
           </ul>
         </div>
       </li>
@@ -146,15 +151,17 @@
         </button>
         <div class="collapse" id="users-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li><a href="#" class="link-dark rounded text-white">New</a></li>
-            <li><a href="#" class="link-dark rounded text-white">Processed</a></li>
-            <li><a href="#" class="link-dark rounded text-white">Shipped</a></li>
-            <li><a href="#" class="link-dark rounded text-white">Returned</a></li>
+            <li><a href="#" class="link-dark rounded text-white">Novo</a></li>
+            <li><a href="#" class="link-dark rounded text-white">Editar</a></li>
+            <li><a href="#" class="link-dark rounded text-white">Troca de Senha</a></li>
+            <li><a href="#" class="link-dark rounded text-white">Cargos</a></li>
           </ul>
         </div>
       </li>
     </ul>
+    
     <hr>
+
   </div>
 
   <div class="b-example-divider"></div>
