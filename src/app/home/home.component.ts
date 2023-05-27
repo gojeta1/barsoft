@@ -1,8 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { AuthenticationService } from '../authentication.service';
-import { Router } from '@angular/router';
-import * as $ from 'jquery';
+
 
 
 @Component({
@@ -13,20 +10,15 @@ import * as $ from 'jquery';
 )
 
 
-export class HomeComponent implements OnInit{
+export class HomeComponent{
 
-    nomeUsuario = '';
-    
+  phoneNumber = '+55123456789'; // Número de telefone desejado
+  message = 'Olá, gostaria de iniciar uma conversa!';
 
-  constructor(private authenticationService: AuthenticationService, private htpp: HttpClient) {}
-
-  ngOnInit() {
-    // Substitua pelo id do usuário logado obtido a partir do seu mecanismo de autenticação
-     this.authenticationService.getNomeUsuarioLogado(Number(3)).subscribe((data: any) => {
-      this.nomeUsuario = data.nome;
-    });
+  openWhatsApp() {
+    const url = `https://wa.me/${this.phoneNumber}?text=${encodeURIComponent(this.message)}`;
+    window.open(url, '_blank');
   }
-  
 
   }
 
