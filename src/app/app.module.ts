@@ -10,6 +10,7 @@ import {HttpClientModule} from '@angular/common/http'
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { CadastroclientesComponent } from './cadastros/clientes/cadastroclientes/cadastroclientes.component';
+import { SidebarComponent } from './sidebar/sidebar.component';
 
 export function jwtOptionsFactory() {
   return {
@@ -28,6 +29,7 @@ export function jwtOptionsFactory() {
     HomeComponent,
     FooterComponent,
     CadastroclientesComponent,
+    SidebarComponent,
      
   ],
   imports: [
