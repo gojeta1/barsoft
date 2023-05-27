@@ -24,6 +24,7 @@ export class AuthenticationService {
   isLoggedin = false;
   aguardandoResposta = true;
   carregando = true;
+  private isAuthenticated = false;
 
   constructor(private http: HttpClient, private router: Router, private notificationService: NotificationService) { }
   
@@ -41,7 +42,7 @@ export class AuthenticationService {
         if(response.success === true){
           console.log('logado')
           this.router.navigate(['/home'])
-          this.isLoggedin = true;
+          this.isAuthenticated = true;
           return response;
           }
       },
@@ -55,8 +56,16 @@ export class AuthenticationService {
   }
  
 
-  isLoggedIn(): boolean{
-    return !!localStorage.getItem('token');
+  logout(): void {
+    // Lógica de logout
+    // Realize as ações necessárias para deslogar o usuário, como limpar o token de autenticação, remover informações da sessão, etc.
+
+    this.isAuthenticated = false;
+  }
+
+  isAuthenticatedUser(): boolean {
+    // Verifique se o usuário está autenticado
+    return this.isAuthenticated;
   }
 
   getNomeUsuarioLogado(userId: number) {
