@@ -10,9 +10,10 @@ import { CadastroclientesComponent } from './cadastros/clientes/cadastroclientes
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent},
-  { path: 'home', component: HomeComponent, children:[
-    { path: 'cadastroclientes', component: CadastroclientesComponent}
-  ]}
+  { path: 'home', component: HomeComponent, canActivate:[AuthGuard], children:[
+    { path: 'cadastroclientes', component: CadastroclientesComponent, outlet:'main'}
+  ]},
+  { path: 'cadastroclientes', component: CadastroclientesComponent, canActivate:[AuthGuard]}
 ];
 
 @NgModule({
