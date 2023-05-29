@@ -70,22 +70,6 @@ app.get('/user/:userId', function(req, res) {
   });
 });
 
-app.get('/user', (req, res) => {
-  const {username, password} = req.body;
-  connection.query('SELECT id FROM users WHERE username = ? AND password = ?' [username, password], (error, results => {
-    if (error) {
-      console.error('Erro ao consultar o banco de dados:', error);
-      res.status(500).send('Erro ao consultar o banco de dados');
-    } else if (results.length === 0) {
-      console.warn(`Usuário não encontrado ou senha incorreta para o usuário ${username}`);
-      res.status(401).send('Usuário não encontrado ou senha incorreta');
-    } else {
-      const userId = results[0].id;
-      res.send({ userId });
-    }
-  }));
-
-});
 
 
 // Iniciando o servidor
