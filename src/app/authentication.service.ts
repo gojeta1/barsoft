@@ -40,7 +40,6 @@ export class AuthenticationService {
 
         // Faça o que for necessário após o login bem-sucedido
         if(response.success === true){
-          console.log('logado')
           this.router.navigate(['/home'])
           this.isAuthenticated = true;
           return response;
