@@ -21,8 +21,8 @@ export class LoginComponent {
   username: string = '' ;
   password: string = '' ;
   isLoggedin = false;
-  userId: number = 0;
   notification: string = '';
+  nomeUsuario = '';
 
   constructor(private authenticationService: AuthenticationService, private router: Router, private notificationService: NotificationService) {}
   
@@ -34,34 +34,13 @@ export class LoginComponent {
     });
   }
 
-  login() {
+  login(): void {
     
     this.notification = ''; // Limpar notificação anterior
     this.aguardandoResposta = true;
     this.carregando = true;
     
-     this.authenticationService.login(this.username, this.password)
-
+    this.authenticationService.login(this.username, this.password)
   }
-
-
-  // Logica do botão de mutar o vídeo da tela de login
-
-  video!: HTMLVideoElement;
-  isMuted = false;
-
-  ngAfterViewInit() {
-    this.video = document.getElementById('my-video') as HTMLVideoElement;
-  }
-
-  muteVideo() {
-    this.isMuted = !this.isMuted;
-    this.video.muted = this.isMuted;
-  }
-  
-  fecharAlerta(){
-
-  }
-
 
 }
