@@ -9,7 +9,7 @@ import { FooterComponent } from './footer/footer.component';
 import {HttpClientModule} from '@angular/common/http'
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
-import { CadastroclientesComponent } from './cadastros/clientes/cadastroclientes/cadastroclientes.component';
+import { CadastroclientesComponent } from './cadastros/cadastroclientes/cadastroclientes.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { CadastrousuarioComponent } from './cadastros/cadastrousuario/cadastrousuario.component';
 
