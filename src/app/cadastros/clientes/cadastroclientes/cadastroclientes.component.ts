@@ -1,6 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { response } from 'express';
 import { NotificationService } from 'src/app/notification.service';
+
+interface ApiResponse {
+  success: boolean;
+  message: string;
+  // outras propriedades necessárias
+}
 
 @Component({
   selector: 'app-cadastroclientes',
@@ -18,6 +25,8 @@ export class CadastroclientesComponent implements OnInit{
     cep: ''
   };
 
+  
+
   ngOnInit() {
     this.notificationService.notification$.subscribe((message) => {
       this.notification = message;
@@ -27,13 +36,13 @@ export class CadastroclientesComponent implements OnInit{
 
   apiUrl = 'http://localhost:3000/cadclientes'
 
-  notification: string = '';
-  notification2: string = '';
+  notification: any;
+  notification2: any;
 
   constructor(private http: HttpClient, private notificationService: NotificationService) {}
 
   submitForm() {
-    this.http.post(this.apiUrl, this.cliente)
+    this.http.post<ApiResponse>(this.apiUrl, this.cliente)
       .subscribe(
         response => {
           console.log(response);
@@ -46,12 +55,20 @@ export class CadastroclientesComponent implements OnInit{
             numero: '',
             cep: ''
           };
-          this.notification = 'Cadastrado com sucesso'
+          this.notification = 'Cadastro realizado com sucesso.';
+          this.notification2 = null;
         },
         error => {
           console.error(error);
           console.log('Erro ao cadastrar cliente');
-          this.notification2 = "Erro ao cadastrar cliente"
+          if(error.status === 400){
+            this.notification2 = 'Por favor, preencha todos os campos obrigatórios.';
+            this.notification = null;
+          }else{
+            this.notification = 'Erro interno do servidor.';
+            this.notification2 = null;
+          }
+
         }
       );
   }
