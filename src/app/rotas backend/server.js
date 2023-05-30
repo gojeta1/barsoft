@@ -31,6 +31,7 @@ connection.connect(function(err) {
 // Criando a rota de login
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
+  
 
   if (!username || !password) {
     res.status(400).json({ message: 'Por favor, preencha todos os campos' });
@@ -44,31 +45,16 @@ app.post('/login', (req, res) => {
       res.status(500).json({ message: 'Erro ao autenticar' });
       return;
     } else if (results.length > 0) {
+      const user = results[0]; // Aqui você armazena o primeiro usuário retornado na constante "user"
+      const nomeUsuario = user.NOME; // Aqui você obtém o nome do usuário
       res.status(200);
-      res.json({ success: true, message: 'Login Realizado com sucesso'});
+      res.json({ success: true,  message: 'Login Realizado com sucesso', nomeUsuario: nomeUsuario});
     } else {
       res.status(401).json({ message: 'Usuário ou senha incorretos' });
     }
   });
 });
 
-app.get('/user/:userId', function(req, res) {
-  const userId = req.params.userId;
-  
-  connection.query('SELECT nome FROM users WHERE id = ?', [userId], (error, results) => {
-    if (error) {
-      res.status(500).send('Internal Server Error');
-    } else {
-      if(results.length > 0){
-        const nome = results[0].nome;
-        return res.status(200).json({ nome: nome });
-      }else{
-        res.status(404).send('Usuário não encontrado');
-      }
-
-    }
-  });
-});
 
 // Rota para adicionar um cliente
 app.post('/cadclientes', (req, res) => {
