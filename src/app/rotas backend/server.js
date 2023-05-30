@@ -76,24 +76,22 @@ app.post('/cadclientes', (req, res) => {
 
   if (!nome || !email || !celular) {
     console.log('Campos obrigátorios não preenchido')
-   res.status(400).json({ message: 'Por favor, preencha todos os campos obrigatórios.' });
-   return;
+    return res.status(400).json({ message: 'Por favor, preencha todos os campos obrigatórios.' });
   }
 
   if (!validateEmail(email)) {
-    res.status(400).json({ message: 'E-mail inválido.' });
-    return;
+    return res.status(400).json({ message: 'E-mail inválido.' });
   }
 
   const query = 'INSERT INTO cad_clientes (nome, email, celular, rua, bairro, numero, cep) VALUES (?, ?, ?, ?, ?, ?, ?)';
   connection.query(query, [nome, email, celular, rua, bairro, numero, cep], (err, result) => {
     if (err) {
       console.error('Erro ao inserir cliente: ' + err.message);
-      res.status(500).json({ message: 'Erro ao inserir cliente' });
-      return;
+      return res.status(500).json({ message: 'Erro ao inserir cliente' });
     }
     console.log('Cliente inserido com sucesso');
-    res.status(200).json({ message: 'Cliente inserido com sucesso' });
+    res.status(200)
+    return res.json({ message: 'Cliente inserido com sucesso' });
   });
 
   function validateEmail(email) {
