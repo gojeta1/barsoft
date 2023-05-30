@@ -2,6 +2,7 @@ import { Component, OnInit  } from '@angular/core';
 import { AuthenticationService } from '../authentication.service';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { response } from 'express';
 
 @Component({
   selector: 'app-sidebar',
@@ -12,17 +13,15 @@ export class SidebarComponent implements OnInit {
 
   nomeUsuario = '';
 
+  private apiUrl = 'http://localhost:3000';
 
-  constructor(private authenticationService: AuthenticationService, private htpp: HttpClient, private router: Router) {}
+  constructor(private authenticationService: AuthenticationService, private http: HttpClient, private router: Router) {this.nomeUsuario = this.authenticationService.getNomeUser()}
 
   navigateTo(option: string) {
     this.router.navigate(['/home', { outlets: { main: [option] } }]);
   }
 
-  ngOnInit(): void {
-    // Substitua pelo id do usuário logado obtido a partir do seu mecanismo de autenticação
-     this.authenticationService.getNomeUsuarioLogado(Number(3)).subscribe((data: any) => {
-      this.nomeUsuario = data.nome;
-    });
+  ngOnInit() {
+  
   }
 }
