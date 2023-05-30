@@ -87,6 +87,24 @@ app.post('/cadclientes', (req, res) => {
   }
 });
 
+app.post('/cadusuario', (req, res) => {
+  const {id, nome, username, password, token} = req.body;
+
+  if(!username || !password){
+    return res.status(400).json({message: 'Por favor, preencha todos os campos obrigatórios.' });
+  }
+
+  const query = 'INSERT INTO users (id, nome, username, password, token) VALUES (?, ?, ?, ?, ?)';
+
+  connection.query(query, [id, nome, username, password, token], (err, result) =>{
+    if(err){
+      return res.status(500),json({message: 'Erro interno do servidor'});
+    }
+    res.status(200)
+    console.log('usuario cadastrado com sucesso')
+    return res.json({message: 'Usuário cadastrado com sucesso'});
+  })
+})
 
 // Iniciando o servidor
 app.listen(3000, () => {
