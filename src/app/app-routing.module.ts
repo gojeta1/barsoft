@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './auth.guard';
-import { CadastroclientesComponent } from './cadastros/clientes/cadastroclientes/cadastroclientes.component';
+import { CadastroclientesComponent } from './cadastros/cadastroclientes/cadastroclientes.component';
 import { DashboardgeralComponent } from './dashboards/dashboardgeral/dashboardgeral.component';
 import { DashboardsemanalComponent } from './dashboards/dashboardsemanal/dashboardsemanal.component';
 import { DashboardmensalComponent } from './dashboards/dashboardmensal/dashboardmensal.component';
