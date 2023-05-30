@@ -11,6 +11,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { CadastroclientesComponent } from './cadastros/clientes/cadastroclientes/cadastroclientes.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { CadastrousuarioComponent } from './cadastros/cadastrousuario/cadastrousuario.component';
 
 export function jwtOptionsFactory() {
   return {
@@ -30,6 +31,7 @@ export function jwtOptionsFactory() {
     FooterComponent,
     CadastroclientesComponent,
     SidebarComponent,
+    CadastrousuarioComponent,
      
   ],
   imports: [
