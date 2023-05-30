@@ -70,6 +70,38 @@ app.get('/user/:userId', function(req, res) {
   });
 });
 
+// Rota para adicionar um cliente
+app.post('/cadclientes', (req, res) => {
+  const { nome, email, celular, rua, bairro, numero, cep } = req.body;
+
+  if (!nome || !email || !celular) {
+    console.log('Campos obrigátorios não preenchido')
+   res.status(400).json({ message: 'Por favor, preencha todos os campos obrigatórios.' });
+   return;
+  }
+
+  if (!validateEmail(email)) {
+    res.status(400).json({ message: 'E-mail inválido.' });
+    return;
+  }
+
+  const query = 'INSERT INTO cad_clientes (nome, email, celular, rua, bairro, numero, cep) VALUES (?, ?, ?, ?, ?, ?, ?)';
+  connection.query(query, [nome, email, celular, rua, bairro, numero, cep], (err, result) => {
+    if (err) {
+      console.error('Erro ao inserir cliente: ' + err.message);
+      res.status(500).json({ message: 'Erro ao inserir cliente' });
+      return;
+    }
+    console.log('Cliente inserido com sucesso');
+    res.status(200).json({ message: 'Cliente inserido com sucesso' });
+  });
+
+  function validateEmail(email) {
+    // Implemente a validação de e-mail conforme suas necessidades
+    // Neste exemplo, vamos verificar se o e-mail contém um @
+    return email.includes('@');
+  }
+});
 
 
 // Iniciando o servidor
