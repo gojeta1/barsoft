@@ -20,29 +20,28 @@ export class AuthenticationService {
 
   private apiUrl = 'http://localhost:3000';
  
-  nomeUsuario: string ='';
+  
   isLoggedin = false;
   aguardandoResposta = true;
   carregando = true;
   private isAuthenticated = false;
+  nomeUser = '';
 
   constructor(private http: HttpClient, private router: Router, private notificationService: NotificationService) { }
   
 
-  login(username: string, password: string){
+  login(username: string, password: string): void{
 
      this.http.post<any>(`${this.apiUrl}/login`, {username, password}).subscribe(
       (response) => {
         console.log(response.message);
 
-        // Armazene o token localmente
-        localStorage.setItem('token', response.token);
-
         // Faça o que for necessário após o login bem-sucedido
         if(response.success === true){
+          this.nomeUser = response.nomeUsuario;
           this.router.navigate(['/home'])
           this.isAuthenticated = true;
-          return response;
+          return;
           }
       },
       (error) => {
@@ -53,7 +52,10 @@ export class AuthenticationService {
     );
     
   }
- 
+
+  getNomeUser(){
+    return this.nomeUser;
+  }
 
   logout(): void {
     // Lógica de logout
@@ -65,10 +67,6 @@ export class AuthenticationService {
   isAuthenticatedUser(): boolean {
     // Verifique se o usuário está autenticado
     return this.isAuthenticated;
-  }
-
-  getNomeUsuarioLogado(userId: number) {
-    return this.http.get<any>(`${this.apiUrl}/user/${userId}`)
   }
 
   getToken() {
