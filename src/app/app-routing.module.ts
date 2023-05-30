@@ -8,6 +8,7 @@ import { DashboardgeralComponent } from './dashboards/dashboardgeral/dashboardge
 import { DashboardsemanalComponent } from './dashboards/dashboardsemanal/dashboardsemanal.component';
 import { DashboardmensalComponent } from './dashboards/dashboardmensal/dashboardmensal.component';
 import { DashboardanualComponent } from './dashboards/dashboardanual/dashboardanual.component';
+import { CadastrousuarioComponent } from './cadastros/cadastrousuario/cadastrousuario.component';
 
 
 const routes: Routes = [
@@ -18,9 +19,11 @@ const routes: Routes = [
     { path: 'dashboardgeral', component: DashboardgeralComponent, outlet:'main'},
     { path: 'dashboardsemanal', component: DashboardsemanalComponent, outlet:'main'},
     { path: 'dashboardmensal', component: DashboardmensalComponent, outlet:'main'},
-    { path: 'dashboardanual', component: DashboardanualComponent, outlet:'main'}
+    { path: 'dashboardanual', component: DashboardanualComponent, outlet:'main'},
+    { path: 'cadastrousuario', component: CadastrousuarioComponent, outlet:'main'},
   ]},
-  { path: 'cadastroclientes', component: CadastroclientesComponent, canActivate:[AuthGuard]}
+  { path: 'cadastroclientes', component: CadastroclientesComponent, canActivate:[AuthGuard]},
+  { path: 'cadastrousuario', component: CadastrousuarioComponent, canActivate:[AuthGuard]}
 ];
 
 @NgModule({
