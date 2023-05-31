@@ -1,4 +1,5 @@
 .profile-picture {
+  display: block;
   position: relative;
   width: 100px;
   height: 100px;
@@ -6,8 +7,14 @@
 }
 
 .profile-picture img {
-  width: 100%;
-  height: 100%;
+  width: 100px;
+  height: 100px;
   object-fit: cover;
-  border-radius: 50%;
+  clip-path: circle(50% at 50% 50%);
+}
+
+.profile-image-label {
+  display: flex;
+  justify-content: center; /* Aplicando o estilo border-radius ao label */
+  overflow: hidden; /* Para garantir que a imagem não ultrapasse os limites do label */
 }
