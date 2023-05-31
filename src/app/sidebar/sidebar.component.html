@@ -72,14 +72,17 @@
 
 <main>
   <div class="d-flex flex-column flex-shrink-0 p-3 text-white sidebar" style="width: 280px;">
-    <div class="dropdown">
+    <div class="row align-items-center justify-content-center mb-6" id="photouser">
+      <div class="col-md-6">
+        <app-editarusuario></app-editarusuario>
+      </div>
+    <div class="dropdown col-md-6">
         <ul class="nav nav-pills flex-column mb-auto">
             <li class="mb-1">
-                <a class=" align-items-center text-white" id="dropdownUser1"  aria-expanded="false">
-                <img src="\assets\jhon\user.jpg" alt="" width="32" height="32" class="rounded-circle me-2">
-                    <label>Bem-vindo, {{nomeUsuario}}</label>
+                <a class="align-items-center justify-content-center text-white" id="dropdownUser1"  aria-expanded="false">
+                    <label>Olá, {{nomeUsuario}}</label>
                   </a>   
-                  <div class="sidebar-footer">
+                  <div class="sidebar-footer mt-3">
                     <a href="">
                       <i class="fa fa-bell"></i>
                       <span class="badge badge-pill badge-warning notification">3</span>
@@ -95,6 +98,7 @@
             </li>
         </ul> 
       </div>
+    </div>  
     <hr>
     <ul class="nav nav-pills flex-column mb-auto">
       <li class="mb-1">
@@ -104,10 +108,10 @@
         </button>
         <div class="collapse" id="dashboard-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li><a (click)="navigateTo('dashboardgeral')" class="link-dark rounded text-white" type="submit">Geral</a></li>
-            <li><a (click)="navigateTo('dashboardsemanal')" class="link-dark rounded text-white" type="submit">Semanal</a></li>
-            <li><a (click)="navigateTo('dashboardmensal')" class="link-dark rounded text-white" type="submit">Mensal</a></li>
-            <li><a (click)="navigateTo('dashboardanual')" class="link-dark rounded text-white" type="submit">Anual</a></li>
+            <li><a (click)="navigateTo('dashboardgeral')" class="link rounded text-white" type="submit">Geral</a></li>
+            <li><a (click)="navigateTo('dashboardsemanal')" class="link rounded text-white" type="submit">Semanal</a></li>
+            <li><a (click)="navigateTo('dashboardmensal')" class="link rounded text-white" type="submit">Mensal</a></li>
+            <li><a (click)="navigateTo('dashboardanual')" class="link rounded text-white" type="submit">Anual</a></li>
           </ul>
         </div>
       </li>
