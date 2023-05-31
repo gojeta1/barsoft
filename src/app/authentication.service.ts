@@ -1,17 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { map, tap } from 'rxjs/operators';
-import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
-import { Observable, TimeoutError, of } from 'rxjs';
-import { Token } from '@angular/compiler';
-import { Route, Router } from '@angular/router';
-import { jwtOptionsFactory } from './app.module';
-import { LoginComponent } from './login/login.component';
+import { HttpClient } from '@angular/common/http';
+import {  Router } from '@angular/router';
 import { NotificationService } from './notification.service';
 
-interface LoginResponse {
-  token: string
-}
 
 @Injectable({
   providedIn: 'root'
@@ -67,10 +58,6 @@ export class AuthenticationService {
   isAuthenticatedUser(): boolean {
     // Verifique se o usuário está autenticado
     return this.isAuthenticated;
-  }
-
-  getToken() {
-    return localStorage.getItem('token');
   }
 
   
