@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from '../authentication.service';
 
 interface Usuario {
@@ -21,44 +22,38 @@ interface UploadResponse {
 export class EditarusuarioComponent implements OnInit {
 
   nomeUsuario: string ;
-  profileImageUrl: string = './assets/jhon/user.jpg';
+  profileImageUrl: string = '';
   selectedFile!: File ;
-  imageUrl: string ='';
-
+  shouldUpdateImage: boolean = false;
+  updatedImageUrl: string = '';
 
   constructor(private http: HttpClient,
     private cdr: ChangeDetectorRef,
     private authenticationService: AuthenticationService) {this.nomeUsuario = this.authenticationService.getNomeUser()}
 
-
     ngOnInit() {
         this.nomeUsuario = this.authenticationService.getNomeUser();
-        const img = document.createElement('img');
-        img.onload = () => {
-          this.profileImageUrl = `./assets/jhon/user.jpg?t=${Date.now()}`;
-          this.cdr.detectChanges();
-        };
-        img.src = `./assets/jhon/user.jpg?t=${Date.now()}`;
+        this.profileImageUrl = this.getImageUrl();
+
     }
 
+    
+
+ 
 
   openFileInput() {
     const fileInput = document.getElementById('fileInput');
     if (fileInput !== null) {
       fileInput.click();
+      this.shouldUpdateImage = true;
     }
   }
 
-  uploadProfilePicture(event: any): void {
+  uploadProfilePicture(event: any) {
 
-    const file = event.target.files[0];
-    const reader = new FileReader();
-  
-    reader.onload = (e: any) => {
-      this.profileImageUrl = e.target.result;
-    };
-  
-    reader.readAsDataURL(file);
+    this.selectedFile = event.target.files[0];
+    this.updatedImageUrl = '';
+    this.shouldUpdateImage = true;
 
   }
 
@@ -69,7 +64,8 @@ export class EditarusuarioComponent implements OnInit {
     this.http.put<UploadResponse>('http://localhost:3000/uploadProfilePicture', formData).subscribe(
       response => {
         console.log('Upload realizado com sucesso');
-        this.profileImageUrl = response.imageUrl;
+        this.updatedImageUrl = response.imageUrl;
+        this.profileImageUrl = this.getImageUrl();
       },
       error => {
         console.error('Erro ao enviar a imagem:', error);
@@ -77,10 +73,18 @@ export class EditarusuarioComponent implements OnInit {
     );
   }
 
-  getImageUrl() {
-    // Adicione um timestamp para forçar o recarregamento da imagem após a alteração
-    const timestamp = Date.now();
-    return this.profileImageUrl + '?t=' + timestamp;
+  ngAfterViewChecked(): void {
+    if (this.shouldUpdateImage) {
+     this.shouldUpdateImage = false;
+     this.uploadToServer(this.selectedFile);
+     console.log(this.profileImageUrl)
+    }
   }
 
+  getImageUrl(): string {
+    const imageUrl = this.updatedImageUrl || this.profileImageUrl;
+    const timestamp = Date.now();
+    return imageUrl + '?t=' + timestamp;
+  
+}
 }
