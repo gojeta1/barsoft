@@ -33,8 +33,7 @@ export class EditarusuarioComponent implements OnInit {
 
     ngOnInit() {
         this.nomeUsuario = this.authenticationService.getNomeUser();
-        this.profileImageUrl = this.getImageUrl();
-
+        this.profileImageUrl = localStorage.getItem('profileImage') || this.getImageUrl();
     }
 
     
@@ -66,6 +65,7 @@ export class EditarusuarioComponent implements OnInit {
         console.log('Upload realizado com sucesso');
         this.updatedImageUrl = response.imageUrl;
         this.profileImageUrl = this.getImageUrl();
+        localStorage.setItem('profileImage', this.profileImageUrl);
       },
       error => {
         console.error('Erro ao enviar a imagem:', error);
