@@ -2,7 +2,6 @@ import { Component, OnInit  } from '@angular/core';
 import { AuthenticationService } from '../authentication.service';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { response } from 'express';
 
 @Component({
   selector: 'app-sidebar',
@@ -13,6 +12,7 @@ export class SidebarComponent implements OnInit {
 
   nomeUsuario = '';
 
+  
   constructor(private authenticationService: AuthenticationService, private http: HttpClient, private router: Router) {this.nomeUsuario = this.authenticationService.getNomeUser()}
 
   navigateTo(option: string) {
@@ -22,4 +22,6 @@ export class SidebarComponent implements OnInit {
   ngOnInit() {
   
   }
+
+
 }
