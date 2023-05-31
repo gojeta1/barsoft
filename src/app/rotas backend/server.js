@@ -10,7 +10,7 @@ app.use(cors());
 // Configurando o body-parser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use('/uploads', express.static('/uploads'));
+app.use('/uploads', express.static('C:/barsoft/src/app/rotas backend/uploads'));
 
 // Configurando a conexão com o banco de dados
 const connection = mysql.createConnection({
@@ -26,11 +26,11 @@ connection.connect(function(err) {
   console.log('Conectado ao banco de dados MySQL!');
 });
 
-
+const uploadPath = path.join(__dirname, 'uploads');
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'uploads/');
+    cb(null, uploadPath);
   },
   filename: function (req, file, cb) {
     const extension = path.extname(file.originalname);
@@ -66,10 +66,7 @@ app.put('/uploadProfilePicture', upload.single('profilePicture'), (req, res) => 
       res.status(500).json({ message: 'Erro ao salvar a imagem no banco de dados' });
       return;
     }
-    
     res.json({ message: 'Upload realizado com sucesso!', imageUrl: imageUrl });
-        // Fechar a conexão com o banco de dados
-    connection.end();
   });
 });
 
