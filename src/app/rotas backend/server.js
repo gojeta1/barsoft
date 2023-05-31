@@ -3,10 +3,6 @@ const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const app = express();
 const cors = require('cors');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-const { resolve } = require('path');
-const { rejects } = require('assert');
 const multer = require('multer');
 
 app.use(cors());
