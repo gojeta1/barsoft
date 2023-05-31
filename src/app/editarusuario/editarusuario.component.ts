@@ -22,10 +22,11 @@ interface UploadResponse {
 export class EditarusuarioComponent implements OnInit {
 
   nomeUsuario: string ;
-  profileImageUrl: string = '';
+  profileImageUrl: string = 'assets/padrao.png';
   selectedFile!: File ;
   shouldUpdateImage: boolean = false;
   updatedImageUrl: string = '';
+  
 
   constructor(private http: HttpClient,
     private cdr: ChangeDetectorRef,
@@ -33,7 +34,13 @@ export class EditarusuarioComponent implements OnInit {
 
     ngOnInit() {
         this.nomeUsuario = this.authenticationService.getNomeUser();
-        this.profileImageUrl = localStorage.getItem('profileImage') || this.getImageUrl();
+        const storedProfileImage = localStorage.getItem('profileImage');
+
+          if (storedProfileImage) {
+            this.profileImageUrl = storedProfileImage;
+          } else {
+            this.profileImageUrl = this.getImageUrl();
+          }
     }
 
     
