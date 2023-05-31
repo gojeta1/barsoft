@@ -31,7 +31,6 @@ export class EditarusuarioComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private authenticationService: AuthenticationService) {this.nomeUsuario = this.authenticationService.getNomeUser()}
 
-    public isImageChanged: boolean = false;
 
     ngOnInit() {
         this.nomeUsuario = this.authenticationService.getNomeUser();
@@ -48,7 +47,6 @@ export class EditarusuarioComponent implements OnInit {
     const fileInput = document.getElementById('fileInput');
     if (fileInput !== null) {
       fileInput.click();
-      this.isImageChanged = true;
     }
   }
 
@@ -62,9 +60,6 @@ export class EditarusuarioComponent implements OnInit {
     };
   
     reader.readAsDataURL(file);
- 
- //   this.selectedFile = event.target.files[0];
- // this.isImageChanged = false;
 
   }
 
