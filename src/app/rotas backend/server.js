@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { resolve } = require('path');
 const { rejects } = require('assert');
-
+const multer = require('multer');
 
 app.use(cors());
 // Configurando o body-parser
@@ -26,6 +26,24 @@ const connection = mysql.createConnection({
 connection.connect(function(err) {
   if (err) throw err;
   console.log('Conectado ao banco de dados MySQL!');
+});
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/');
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  }
+});
+
+const upload = multer({ storage: storage });
+
+app.post('/uploadProfilePicture', upload.single('profilePicture'), (req, res) => {
+  // Aqui você pode receber e processar a imagem enviada pelo cliente e armazenar no banco de dados
+  // Certifique-se de configurar a pasta 'uploads/' para salvar as imagens
+  console.log('Imagem recebida:', req.file);
+  res.sendStatus(200);
 });
 
 // Criando a rota de login
