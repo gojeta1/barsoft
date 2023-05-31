@@ -16,7 +16,7 @@ export class AuthenticationService {
   aguardandoResposta = true;
   carregando = true;
   private isAuthenticated = false;
-  nomeUser = '';
+  nomeUser: any;
 
   constructor(private http: HttpClient, private router: Router, private notificationService: NotificationService) { }
   
