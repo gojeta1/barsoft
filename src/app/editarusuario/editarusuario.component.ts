@@ -10,12 +10,12 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
   styleUrls: ['./editarusuario.component.scss']
 })
 export class EditarUsuarioComponent implements OnInit, AfterViewInit {
-  profileImage: string = './assets/jhon/padrao.png';
+  profileImage: string = '';
   selectedFile: File | null = null;
   userId: number;
   isProfileImageUpdated: any;
-  imageVersion: number = 0;
-  isImageLoaded: boolean = false;
+
+
 
   constructor(private http: HttpClient, private route: ActivatedRoute, private authenticationService: AuthenticationService, private cdr: ChangeDetectorRef) {this.userId = this.authenticationService.getUserId()}
 
@@ -26,16 +26,19 @@ export class EditarUsuarioComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
       this.getProfileImage();
       this.cdr.detectChanges();
+
   }
 
 
   getProfileImage() {
     const timestamp = new Date().getTime();
     const imageUrl = `http://localhost:3000/users/${this.userId}/profileImage?timestamp=${timestamp}`;
-    setTimeout(() => {
+ 
+    if(this.profileImage == './rotas backend/uploads'){
+      this.profileImage = './assets/jhon/padrao.png'
+    }else{
       this.profileImage = imageUrl; // Atribui novamente a URL com o timestamp atualizado
-      this.cdr.detectChanges();
-    }, 0);
+    }
   }
 
   getCurrentTimestamp() {
@@ -66,7 +69,7 @@ export class EditarUsuarioComponent implements OnInit, AfterViewInit {
           console.log(`Progresso do upload: ${progress}%`);
         } else if (event.type === HttpEventType.Response) {
           console.log('Upload completo');
-           // Ajuste o tempo de atraso conforme necessário
+         // Ajuste o tempo de atraso conforme necessário
         }
         
       },
