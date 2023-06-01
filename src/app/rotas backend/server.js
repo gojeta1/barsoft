@@ -4,14 +4,16 @@ const bodyParser = require('body-parser');
 const app = express();
 const cors = require('cors');
 const multer = require('multer');
+
 const path = require('path');
 
 app.use(cors());
 // Configurando o body-parser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use('/uploads', express.static('C:/barsoft/src/app/rotas backend/uploads'));
+app.use('/uploads', express.static('uploads'));
 
+//C:/barsoft/src/app/rotas backend/uploads
 // Configurando a conexão com o banco de dados
 const connection = mysql.createConnection({
   host: 'database-1.c1y1f7ntndzm.sa-east-1.rds.amazonaws.com',
@@ -50,37 +52,56 @@ const fileFilter = (req, file, cb) => {
 
 const upload = multer({ storage: storage, fileFilter: fileFilter });
 
-app.put('/uploadProfilePicture', upload.single('profilePicture'), (req, res) => {
-  const profileImage = req.file.filename;
-  const userId = req.user.id; // Supondo que você tenha um mecanismo de autenticação que defina o ID do usuário no objeto req.user
-
-  const query = 'UPDATE users SET profile_image = ? WHERE id = ?';
-  connection.query(query, [profileImage, userId], (err, result) => {
+// Endpoint para atualizar o caminho da imagem de perfil do usuário
+app.put('/users/:id/profileImage', upload.single('profileImage'), (req, res) => {
+  const userId = req.params.id;
+   // Verifique se o arquivo de imagem foi enviado corretamente
+   if (!req.file) {
+    res.status(400).json({ error: 'Nenhum arquivo de imagem enviado' });
+    return;
+  }
+  const imagePath = req.file.path; // Caminho temporário da imagem enviada pelo usuário
+  res.setHeader('Cache-Control', 'no-cache');
+  const sql = 'UPDATE users SET profile_image = ? WHERE id = ?';
+  connection.query(sql, [imagePath, userId], (err) => {
     if (err) {
-      console.error('Erro ao salvar a imagem no banco de dados: ' + err.stack);
-      res.status(500).json({ message: 'Erro ao salvar a imagem no banco de dados' });
-      return;
+      console.error('Erro ao atualizar a imagem do perfil:', err);
+      res.status(500).send('Erro ao atualizar a imagem do perfil');
+    } else {
+      res.status(200).send('Imagem do perfil atualizada com sucesso');
     }
-    res.json({ message: 'Upload realizado com sucesso!' });
   });
 });
 
-// Defina o diretório onde as imagens estão armazenadas
-const imageDirectory = path.join(__dirname, 'uploads');
+app.get('/users/:id/profileImage', (req, res) => {
+  const userId = req.params.id;
+  const sql = 'SELECT profile_image FROM users WHERE id = ?';
+  connection.query(sql, [userId], (err, result) => {
+    if (err) {
+      console.error('Erro ao obter a imagem do perfil:', err);
+      res.status(500).send('Erro ao obter a imagem do perfil');
+    } else {
+      if (result.length > 0) {
+        const profileImagePath = path.resolve('../uploads', result[0].profile_image);
 
-// Defina o roteamento para a rota GET da imagem
-app.get('/profileImage/:imageName', (req, res) => {
-  const imageName = req.params.imageName;
-  const imagePath = path.join(imageDirectory, imageName);
-
-  // Verifique se a imagem existe
-  if (fs.existsSync(imagePath)) {
-    // Envie a imagem como resposta
-    res.sendFile(imagePath);
-  } else {
-    // Se a imagem não existir, envie uma resposta de erro
-    res.status(404).send('Imagem não encontrada');
-  }
+        // Verifica se o caminho da imagem do perfil existe
+        if (profileImagePath) {
+          // Retorne a imagem do perfil como resposta
+          res.setHeader('Cache-Control', 'no-store');
+          res.sendFile(profileImagePath);
+          console.log(profileImagePath)
+        } else {
+          // Caso o caminho da imagem do perfil esteja vazio ou não exista, retorne uma imagem padrão ou uma resposta de erro
+          // Exemplo:
+          // res.sendFile(path.join(__dirname, 'caminho/para/a/imagem/padrao.jpg'));
+          res.status(404).json({ error: 'Imagem do perfil não encontrada' });
+        }
+      } else {
+        // Caso o usuário com o ID fornecido não seja encontrado, retorne uma resposta de erro
+        res.status(404).json({ error: 'Usuário não encontrado' });
+      }
+    }
+  });
 });
 
 // Criando a rota de login
