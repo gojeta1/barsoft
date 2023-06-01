@@ -12,8 +12,8 @@ import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { CadastroclientesComponent } from './cadastros/cadastroclientes/cadastroclientes.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { CadastrousuarioComponent } from './cadastros/cadastrousuario/cadastrousuario.component';
-import { EditarusuarioComponent } from './editarusuario/editarusuario.component';
-
+import { EditarUsuarioComponent } from './editarusuario/editarusuario.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 export function jwtOptionsFactory() {
   return {
@@ -34,12 +34,13 @@ export function jwtOptionsFactory() {
     CadastroclientesComponent,
     SidebarComponent,
     CadastrousuarioComponent,
-     EditarusuarioComponent,
+     EditarUsuarioComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     JwtModule.forRoot({
       jwtOptionsProvider: {
