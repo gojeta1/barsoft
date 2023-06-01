@@ -17,7 +17,8 @@ export class AuthenticationService {
   carregando = true;
   private isAuthenticated = false;
   nomeUser: any;
-
+  userId: any;
+  
   constructor(private http: HttpClient, private router: Router, private notificationService: NotificationService) { }
   
 
@@ -46,6 +47,10 @@ export class AuthenticationService {
 
   getNomeUser(){
     return this.nomeUser;
+  }
+
+  getUserId(){
+    return this.userId;
   }
 
   logout(): void {
