@@ -1,6 +1,5 @@
-<div class="profile-picture" (click)="openFileInput()">
-  <label for="profile-input" class="profile-image-label" type="submit">
-    <img id="profileImage" [src]="profileImageUrl" alt="Profile Picture">
-  </label>
-    <input type="file" id="profile-input" (change)="uploadProfilePicture($event)" style="display: none">
-  </div>
+
+<div>
+  <img [src]="profileImage" alt="Foto de Perfil" class="rounded-circle"  (click)="selectProfileImage()" width="100" height="100" type="file">
+  <input id="fileInput" type="file" accept="image/*" (change)="onFileSelected($event);uploadProfileImage()">
+</div>
