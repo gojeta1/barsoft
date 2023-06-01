@@ -1,20 +1,15 @@
-.profile-picture {
-  display: block;
-  position: relative;
-  width: 100px;
-  height: 100px;
-  cursor: pointer;
-}
-
-.profile-picture img {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  clip-path: circle(50% at 50% 50%);
-}
-
-.profile-image-label {
-  display: flex;
-  justify-content: center; /* Aplicando o estilo border-radius ao label */
-  overflow: hidden; /* Para garantir que a imagem não ultrapasse os limites do label */
-}
+div {
+    position: relative;
+    display: inline-block;
+  }
+  
+  input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+  
