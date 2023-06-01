@@ -82,7 +82,7 @@ app.get('/users/:id/profileImage', (req, res) => {
       res.status(500).send('Erro ao obter a imagem do perfil');
     } else {
       if (result.length > 0) {
-        const profileImagePath = path.resolve('../uploads', result[0].profile_image);
+        const profileImagePath = path.resolve('./uploads', result[0].profile_image);
 
         // Verifica se o caminho da imagem do perfil existe
         if (profileImagePath) {
