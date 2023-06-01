@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {  Router } from '@angular/router';
 import { NotificationService } from './notification.service';
+import { BehaviorSubject } from 'rxjs';
 
 
 @Injectable({
@@ -10,7 +11,7 @@ import { NotificationService } from './notification.service';
 export class AuthenticationService {
 
   private apiUrl = 'http://localhost:3000';
- 
+  private userIdSubject: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   
   isLoggedin = false;
   aguardandoResposta = true;
@@ -31,6 +32,8 @@ export class AuthenticationService {
         // Faça o que for necessário após o login bem-sucedido
         if(response.success === true){
           this.nomeUser = response.nomeUsuario;
+          this.userId = response.userId;
+          console.log(this.userId)
           this.router.navigate(['/home'])
           this.isAuthenticated = true;
           return;
