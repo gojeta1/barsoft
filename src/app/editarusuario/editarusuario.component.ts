@@ -1,97 +1,72 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpEventType } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from '../authentication.service';
-
-interface Usuario {
-  id: string;
-  nome: string;
-  foto: string;
-}
-
-interface UploadResponse {
-  message: string;
-  imageUrl: string; // Adicione a propriedade 'imageUrl' ao tipo personalizado
-}
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-editarusuario',
   templateUrl: './editarusuario.component.html',
   styleUrls: ['./editarusuario.component.scss']
 })
-export class EditarusuarioComponent implements OnInit {
-
-  nomeUsuario: string ;
-  profileImageUrl: string = 'assets/padrao.png';
-  selectedFile!: File ;
-  shouldUpdateImage: boolean = false;
-  updatedImageUrl: string = '';
+export class EditarUsuarioComponent implements OnInit {
   
+  profileImage: string = './assets/jhon/padrao.png';
+  selectedFile: any; 
 
-  constructor(private http: HttpClient,
-    private cdr: ChangeDetectorRef,
-    private authenticationService: AuthenticationService) {this.nomeUsuario = this.authenticationService.getNomeUser()}
+  constructor(private http: HttpClient) {}
 
-    ngOnInit() {
-        this.nomeUsuario = this.authenticationService.getNomeUser();
-        const storedProfileImage = localStorage.getItem('profileImage');
-
-          if (storedProfileImage) {
-            this.profileImageUrl = storedProfileImage;
-          } else {
-            this.profileImageUrl = this.getImageUrl();
-          }
-    }
-
-    
-
- 
-
-  openFileInput() {
-    const fileInput = document.getElementById('fileInput');
-    if (fileInput !== null) {
-      fileInput.click();
-      this.shouldUpdateImage = true;
-    }
+  ngOnInit() {
+    this.getProfileImage();
   }
 
-  uploadProfilePicture(event: any) {
-
-    this.selectedFile = event.target.files[0];
-    this.updatedImageUrl = '';
-    this.shouldUpdateImage = true;
-
-  }
-
-  uploadToServer(file: File) {
-    const formData = new FormData();
-    formData.append('profilePicture', this.selectedFile, this.selectedFile.name);
-
-    this.http.put<UploadResponse>('http://localhost:3000/uploadProfilePicture', formData).subscribe(
-      response => {
-        console.log('Upload realizado com sucesso');
-        this.updatedImageUrl = response.imageUrl;
-        this.profileImageUrl = this.getImageUrl();
-        localStorage.setItem('profileImage', this.profileImageUrl);
+  getProfileImage() {
+    this.http.get<any>('/profileImage').subscribe(
+      (response) => {
+        this.profileImage = response.profileImage;
       },
-      error => {
-        console.error('Erro ao enviar a imagem:', error);
+      (error) => {
+        console.error('Erro ao recuperar a imagem do perfil: ' + error.message);
       }
     );
   }
-
-  ngAfterViewChecked(): void {
-    if (this.shouldUpdateImage) {
-     this.shouldUpdateImage = false;
-     this.uploadToServer(this.selectedFile);
-     console.log(this.profileImageUrl)
-    }
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
   }
 
-  getImageUrl(): string {
-    const imageUrl = this.updatedImageUrl || this.profileImageUrl;
-    const timestamp = Date.now();
-    return imageUrl + '?t=' + timestamp;
+  selectProfileImage() {
+    // Simula o clique no input de arquivo
+    const fileInput = document.getElementById('fileInput');
+    fileInput?.click();
+  }
   
-}
+  uploadProfileImage() {
+
+    if (!this.selectedFile) {
+      console.error('Nenhum arquivo selecionado.');
+      return;
+    }
+
+    const uploadData = new FormData();
+    uploadData.append('profileImage', this.selectedFile, this.selectedFile.name);
+  
+    this.http.post<any>('http://localhost:3000/uploadProfileImage', uploadData, {
+      reportProgress: true,
+      observe: 'events'
+    }).subscribe(
+      (event) => {
+        if (event.type === HttpEventType.UploadProgress) {
+          if (event.total) {
+            const percentDone = Math.round((100 * event.loaded) / event.total);
+            console.log(`Upload progress: ${percentDone}%`);
+          }
+        } else if (event.type === HttpEventType.Response) {
+          console.log('Upload complete');
+        }
+      },
+      (error) => {
+        console.error('Erro ao fazer upload da imagem: ' + error.message);
+      }
+    );
+  }
 }
