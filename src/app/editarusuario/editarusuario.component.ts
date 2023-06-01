@@ -1,5 +1,5 @@
 import { HttpClient, HttpEventType } from '@angular/common/http';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from '../authentication.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -9,39 +9,44 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
   templateUrl: './editarusuario.component.html',
   styleUrls: ['./editarusuario.component.scss']
 })
-export class EditarUsuarioComponent implements OnInit {
-  
+export class EditarUsuarioComponent implements OnInit, AfterViewInit {
   profileImage: string = './assets/jhon/padrao.png';
-  selectedFile: any; 
+  selectedFile: File | null = null;
+  userId: number;
+  isProfileImageUpdated: any;
+  imageVersion: number = 0;
+  isImageLoaded: boolean = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private route: ActivatedRoute, private authenticationService: AuthenticationService, private cdr: ChangeDetectorRef) {this.userId = this.authenticationService.getUserId()}
 
   ngOnInit() {
-    this.getProfileImage();
+
   }
 
-  getProfileImage() {
-    this.http.get<any>('/profileImage').subscribe(
-      (response) => {
-        this.profileImage = response.profileImage;
-      },
-      (error) => {
-        console.error('Erro ao recuperar a imagem do perfil: ' + error.message);
-      }
-    );
+  ngAfterViewInit() {
+      this.getProfileImage();
+      this.cdr.detectChanges();
   }
+
+
+  getProfileImage() {
+    const timestamp = new Date().getTime();
+    const imageUrl = `http://localhost:3000/users/${this.userId}/profileImage?timestamp=${timestamp}`;
+    setTimeout(() => {
+      this.profileImage = imageUrl; // Atribui novamente a URL com o timestamp atualizado
+      this.cdr.detectChanges();
+    }, 0);
+  }
+
+  getCurrentTimestamp() {
+    return new Date().getTime();
+  }
+
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
   }
 
-  selectProfileImage() {
-    // Simula o clique no input de arquivo
-    const fileInput = document.getElementById('fileInput');
-    fileInput?.click();
-  }
-  
   uploadProfileImage() {
-
     if (!this.selectedFile) {
       console.error('Nenhum arquivo selecionado.');
       return;
@@ -49,23 +54,24 @@ export class EditarUsuarioComponent implements OnInit {
 
     const uploadData = new FormData();
     uploadData.append('profileImage', this.selectedFile, this.selectedFile.name);
-  
-    this.http.post<any>('http://localhost:3000/uploadProfileImage', uploadData, {
-      reportProgress: true,
-      observe: 'events'
-    }).subscribe(
-      (event) => {
+
+    const timestamp = new Date().getTime(); // Obtenha o timestamp atual
+
+    this.http.put<any>(`http://localhost:3000/users/${this.userId}/profileImage?timestamp=` + timestamp, uploadData,{reportProgress: true,
+    observe: 'events'}).subscribe(
+      (event: any) => {
         if (event.type === HttpEventType.UploadProgress) {
-          if (event.total) {
-            const percentDone = Math.round((100 * event.loaded) / event.total);
-            console.log(`Upload progress: ${percentDone}%`);
-          }
+          // Mostrar progresso do upload, se necessário
+          const progress = Math.round((event.loaded / event.total) * 100);
+          console.log(`Progresso do upload: ${progress}%`);
         } else if (event.type === HttpEventType.Response) {
-          console.log('Upload complete');
+          console.log('Upload completo');
+           // Ajuste o tempo de atraso conforme necessário
         }
+        
       },
       (error) => {
-        console.error('Erro ao fazer upload da imagem: ' + error.message);
+        console.error('Erro ao fazer upload da imagem:', error);
       }
     );
   }
