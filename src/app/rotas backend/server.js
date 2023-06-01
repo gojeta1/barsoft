@@ -51,23 +51,36 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({ storage: storage, fileFilter: fileFilter });
 
 app.put('/uploadProfilePicture', upload.single('profilePicture'), (req, res) => {
-  // Aqui você pode receber e processar a imagem enviada pelo cliente e armazenar no banco de dados
-  // Certifique-se de configurar a pasta 'uploads/' para salvar as imagens
   const profileImage = req.file.filename;
-  const imageUrl = 'http://localhost:3000/uploads/' + profileImage;
-  const usuarioId = req.params.usuarioId;
-  const novaFoto = req.body.foto;
-  
+  const userId = req.user.id; // Supondo que você tenha um mecanismo de autenticação que defina o ID do usuário no objeto req.user
 
-  const query = 'UPDATE users SET foto = ? WHERE id = ?';
-  connection.query(query, [novaFoto, usuarioId], (err, result) => {
+  const query = 'UPDATE users SET profile_image = ? WHERE id = ?';
+  connection.query(query, [profileImage, userId], (err, result) => {
     if (err) {
       console.error('Erro ao salvar a imagem no banco de dados: ' + err.stack);
       res.status(500).json({ message: 'Erro ao salvar a imagem no banco de dados' });
       return;
     }
-    res.json({ message: 'Upload realizado com sucesso!', imageUrl: imageUrl });
+    res.json({ message: 'Upload realizado com sucesso!' });
   });
+});
+
+// Defina o diretório onde as imagens estão armazenadas
+const imageDirectory = path.join(__dirname, 'uploads');
+
+// Defina o roteamento para a rota GET da imagem
+app.get('/profileImage/:imageName', (req, res) => {
+  const imageName = req.params.imageName;
+  const imagePath = path.join(imageDirectory, imageName);
+
+  // Verifique se a imagem existe
+  if (fs.existsSync(imagePath)) {
+    // Envie a imagem como resposta
+    res.sendFile(imagePath);
+  } else {
+    // Se a imagem não existir, envie uma resposta de erro
+    res.status(404).send('Imagem não encontrada');
+  }
 });
 
 // Criando a rota de login
@@ -89,8 +102,9 @@ app.post('/login', (req, res) => {
     } else if (results.length > 0) {
       const user = results[0]; // Aqui você armazena o primeiro usuário retornado na constante "user"
       const nomeUsuario = user.NOME; // Aqui você obtém o nome do usuário
+      const userId = user.ID;
       res.status(200);
-      res.json({ success: true,  message: 'Login Realizado com sucesso', nomeUsuario: nomeUsuario});
+      res.json({ success: true,  message: 'Login Realizado com sucesso', nomeUsuario: nomeUsuario, userId: userId});
     } else {
       res.status(401).json({ message: 'Usuário ou senha incorretos' });
       connection.end();
