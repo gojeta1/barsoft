@@ -9,7 +9,7 @@ import { DashboardsemanalComponent } from './dashboards/dashboardsemanal/dashboa
 import { DashboardmensalComponent } from './dashboards/dashboardmensal/dashboardmensal.component';
 import { DashboardanualComponent } from './dashboards/dashboardanual/dashboardanual.component';
 import { CadastrousuarioComponent } from './cadastros/cadastrousuario/cadastrousuario.component';
-import { EditarusuarioComponent } from './editarusuario/editarusuario.component';
+import { EditarUsuarioComponent } from './editarusuario/editarusuario.component';
 
 
 const routes: Routes = [
@@ -22,11 +22,11 @@ const routes: Routes = [
     { path: 'dashboardmensal', component: DashboardmensalComponent, outlet:'main'},
     { path: 'dashboardanual', component: DashboardanualComponent, outlet:'main'},
     { path: 'cadastrousuario', component: CadastrousuarioComponent, outlet:'main'},
-    { path: 'editarusuario', component: EditarusuarioComponent, outlet:'main'},
+    { path: 'editarusuario', component: EditarUsuarioComponent, outlet:'main'},
   ]},
   { path: 'cadastroclientes', component: CadastroclientesComponent, canActivate:[AuthGuard]},
   { path: 'cadastrousuario', component: CadastrousuarioComponent, canActivate:[AuthGuard]},
-  { path: 'editarusuario', component: EditarusuarioComponent, canActivate:[AuthGuard]}
+  { path: 'editarusuario', component: EditarUsuarioComponent, canActivate:[AuthGuard]}
 ];
 
 @NgModule({
