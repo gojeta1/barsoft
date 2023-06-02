@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { error } from 'console';
 import { AuthenticationService } from '../authentication.service';
+import { UserService } from '../userservice.service';
+import { NotificationService } from '../notification.service';
 
 @Component({
   selector: 'app-tabelausuarios',
@@ -13,8 +15,9 @@ export class TabelausuariosComponent implements OnInit{
   registros: any [] = [];
   registroAtual: any;
   userId: any;
+  
 
-  constructor (private http: HttpClient, private authenticationService: AuthenticationService){this.userId = this.authenticationService.getUserId()}
+  constructor (private http: HttpClient, private authenticationService: AuthenticationService,private userService: UserService,private notificationService: NotificationService){}
 
   ngOnInit(): void {
     this.buscarRegistros();
@@ -23,7 +26,7 @@ export class TabelausuariosComponent implements OnInit{
   buscarRegistros() {
     this.http.get<any[]>(`${this.apiUrl}tabelausuarios`).subscribe((response) => {
       this.registros = response;
-    },
+  },
     (error) => {
       console.log(error);
     });
@@ -40,9 +43,20 @@ export class TabelausuariosComponent implements OnInit{
     });
   }
   
-  excluirRegistro(registro: { id: any; }) {
-    this.http.delete(`${this.apiUrl},${registro.id}`).subscribe(() => {
-      // Lógica adicional após a exclusão do registro
+  deleteRegistro(userId: number, userNome: string) {
+    this.notificationService.confirm(`Tem certeza que deseja excluir o usuário ${userNome}?`, 'Confirmação de exclusão').then((result) => {
+      if (result) {
+        this.userService.deleteUser(userId).subscribe(
+          () => {
+            console.log('Usuário excluído com sucesso');
+            this.buscarRegistros();
+          },
+          (error) => {
+            console.error('Erro ao excluir usuário:', error);
+          }
+        );
+      }
     });
   }
-}
+  }
+
