@@ -16,7 +16,9 @@ import { EditarUsuarioComponent } from './editarusuario/editarusuario.component'
 import { ReactiveFormsModule } from '@angular/forms';
 import { TabelaclientesComponent } from './tabelaclientes/tabelaclientes.component';
 import { TabelausuariosComponent } from './tabelausuarios/tabelausuarios.component';
-import { ConfirmationModalComponent } from './confirmationmodal/confirmationmodal.component';
+import { ConfirmamodalComponent } from './confirmamodal/confirmamodal.component';
+
+
 
 
 export function jwtOptionsFactory() {
@@ -41,7 +43,7 @@ export function jwtOptionsFactory() {
      EditarUsuarioComponent,
      TabelaclientesComponent,
      TabelausuariosComponent,
-     ConfirmationModalComponent,
+     ConfirmamodalComponent
 
   ],
   imports: [
