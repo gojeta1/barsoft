@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ConfirmationModalComponent } from './confirmationmodal/confirmationmodal.component';
 
 @Injectable({
   providedIn: 'root'
@@ -14,5 +15,12 @@ export class NotificationService {
     this.notificationSubject.next(message);
   }
   
-  constructor() { }
+  constructor(private modalService: NgbModal) { }
+
+  confirm(message: string, title: string): Promise<boolean> {
+    const modalRef = this.modalService.open(ConfirmationModalComponent, { centered: true });
+    modalRef.componentInstance.message = message;
+    modalRef.componentInstance.title = title;
+    return modalRef.result;
+  }
 }
