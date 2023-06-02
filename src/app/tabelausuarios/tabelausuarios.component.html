@@ -1,30 +1,40 @@
-<h1>Usuários</h1>
-<div class="grid text-center">
-    <table >
-        <tr>
-          <th class="g-col-4 text-white">ID</th>
-          <th class="g-col-4 text-white">USERNAME</th>
-          <th class="g-col-4 text-white">NOME</th>
-        </tr>
-        <tr *ngFor="let registro of registros">
-          <td>{{ registro.ID }}</td>
-          <td>{{ registro.USERNAME }}</td>
-          <td>{{ registro.NOME }}</td>
-          <td>
-            <div class="row">
-                <div class="col">
-                    <button class="edit-button">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                </div>
-                <div class="col">
-                    <button class="delete-button">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
+<div class="container-fluid align-content-center">
+             <h1>Usuários</h1>
+        <div class="grid text-center">
+            <table class="table">
+                <tr>
+                    <th class="col-md-4 text-white text-center">ID</th>
+                    <th class="col-md-4 text-white text-center">USERNAME</th>
+                    <th class="col-md-4 text-white text-center">NOME</th>
+                </tr>
+                <tr class="" *ngFor="let registro of registros">
+                    <td class="text-center">{{ registro.ID }}</td>
+                    <td class="text-center">{{ registro.USERNAME }}</td>
+                    <td class="text-center">{{ registro.NOME }}</td>
+                    <td class="text-center">
+                        <div class="row">
+                            <div class="col-md-2" >
+                                <button class="edit-button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            </div>
+                            <div class="col-md-2">
+                                <button class="delete-button">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
+                <button type="button" class="btn-close " data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                <div class="offcanvas-body">
+                    <div class="container">
+                        <app-cadastrousuario></app-cadastrousuario>
+                    </div>
                 </div>
             </div>
-          </td>
-        </tr>
-      </table>
-      
+        </div>
 </div>
+
