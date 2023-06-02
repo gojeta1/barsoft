@@ -1,0 +1,30 @@
+<h1>Usuários</h1>
+<div class="grid text-center">
+    <table >
+        <tr>
+          <th class="g-col-4 text-white">ID</th>
+          <th class="g-col-4 text-white">USERNAME</th>
+          <th class="g-col-4 text-white">NOME</th>
+        </tr>
+        <tr *ngFor="let registro of registros">
+          <td>{{ registro.ID }}</td>
+          <td>{{ registro.USERNAME }}</td>
+          <td>{{ registro.NOME }}</td>
+          <td>
+            <div class="row">
+                <div class="col">
+                    <button class="edit-button">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                </div>
+                <div class="col">
+                    <button class="delete-button">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+      
+</div>
