@@ -14,6 +14,8 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { CadastrousuarioComponent } from './cadastros/cadastrousuario/cadastrousuario.component';
 import { EditarUsuarioComponent } from './editarusuario/editarusuario.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { TabelaclientesComponent } from './tabelaclientes/tabelaclientes.component';
+import { TabelausuariosComponent } from './tabelausuarios/tabelausuarios.component';
 
 export function jwtOptionsFactory() {
   return {
@@ -35,6 +37,8 @@ export function jwtOptionsFactory() {
     SidebarComponent,
     CadastrousuarioComponent,
      EditarUsuarioComponent,
+     TabelaclientesComponent,
+     TabelausuariosComponent,
   ],
   imports: [
     BrowserModule,
