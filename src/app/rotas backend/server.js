@@ -177,12 +177,45 @@ app.post('/cadusuario', (req, res) => {
 
   connection.query(query, [id, nome, username, password, token], (err, result) =>{
     if(err){
-      return res.status(500),json({message: 'Erro interno do servidor'});
+      return res.status(500).json({message: 'Erro interno do servidor'});
     }
     res.status(200)
     console.log('usuario cadastrado com sucesso')
     return res.json({message: 'Usuário cadastrado com sucesso'});
   });
+});
+
+app.get('/tabelausuarios', (req, res) => {
+  // Código para buscar todos os registros no banco de dados usando Sequelize
+  const query = 'SELECT * FROM users';
+
+  connection.query(query, (err, result) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ message: 'Erro interno do servidor' });
+    }
+
+    res.status(200).json(result);
+    console.log(result);
+  });
+});
+
+app.put('/tabelausuarios/:id', (req, res) => {
+  const registroAtualizado = req.body;
+  const registroId = req.params.id;
+
+  // Código para atualizar o registro no banco de dados usando Sequelize
+
+  res.json(registroAtualizado);
+});
+
+// Rota para excluir um registro existente
+app.delete('/tabelausuarios/:id', (req, res) => {
+  const registroId = req.params.id;
+
+  // Código para excluir o registro no banco de dados usando Sequelize
+
+  res.sendStatus(204);
 });
 
 // Iniciando o servidor
