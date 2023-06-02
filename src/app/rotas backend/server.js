@@ -89,7 +89,6 @@ app.get('/users/:id/profileImage', (req, res) => {
           // Retorne a imagem do perfil como resposta
           res.setHeader('Cache-Control', 'no-store');
           res.sendFile(profileImagePath);
-          console.log(profileImagePath)
         } else {
           // Caso o caminho da imagem do perfil esteja vazio ou não exista, retorne uma imagem padrão ou uma resposta de erro
           // Exemplo:
@@ -194,9 +193,7 @@ app.get('/tabelausuarios', (req, res) => {
       console.error(err);
       return res.status(500).json({ message: 'Erro interno do servidor' });
     }
-
     res.status(200).json(result);
-    console.log(result);
   });
 });
 
@@ -212,9 +209,16 @@ app.put('/tabelausuarios/:id', (req, res) => {
 // Rota para excluir um registro existente
 app.delete('/tabelausuarios/:id', (req, res) => {
   const registroId = req.params.id;
-
+  const query = 'DELETE FROM users WHERE id = ?'
   // Código para excluir o registro no banco de dados usando Sequelize
-
+  connection.query(query, [registroId], (err,result) =>{
+    if(err){
+      console.error(err);
+      return res.status(500).json({message: 'Erro ao excluir Usuário'})
+    }else if(result.length > 0){
+      res.status(200).json(result);
+    }
+  })
   res.sendStatus(204);
 });
 
