@@ -10,6 +10,8 @@ import { DashboardmensalComponent } from './dashboards/dashboardmensal/dashboard
 import { DashboardanualComponent } from './dashboards/dashboardanual/dashboardanual.component';
 import { CadastrousuarioComponent } from './cadastros/cadastrousuario/cadastrousuario.component';
 import { EditarUsuarioComponent } from './editarusuario/editarusuario.component';
+import { TabelaclientesComponent } from './tabelaclientes/tabelaclientes.component';
+import { TabelausuariosComponent } from './tabelausuarios/tabelausuarios.component';
 
 
 const routes: Routes = [
@@ -21,6 +23,8 @@ const routes: Routes = [
     { path: 'dashboardsemanal', component: DashboardsemanalComponent, outlet:'main'},
     { path: 'dashboardmensal', component: DashboardmensalComponent, outlet:'main'},
     { path: 'dashboardanual', component: DashboardanualComponent, outlet:'main'},
+    { path: 'tabelaclientes', component: TabelaclientesComponent, outlet:'main'},
+    { path: 'tabelausuarios', component: TabelausuariosComponent, outlet:'main'},
     { path: 'cadastrousuario', component: CadastrousuarioComponent, outlet:'main'},
     { path: 'editarusuario', component: EditarUsuarioComponent, outlet:'main'},
   ]},
