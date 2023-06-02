@@ -11,7 +11,6 @@ import { BehaviorSubject } from 'rxjs';
 export class AuthenticationService {
 
   private apiUrl = 'http://localhost:3000';
-  private userIdSubject: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   
   isLoggedin = false;
   aguardandoResposta = true;
