@@ -19,13 +19,12 @@ export class EditarUsuarioComponent implements OnInit, AfterViewInit {
 
   constructor(private http: HttpClient, private route: ActivatedRoute, private authenticationService: AuthenticationService, private cdr: ChangeDetectorRef) {this.userId = this.authenticationService.getUserId()}
 
-  ngOnInit() {
-
+  ngOnInit(): void {
+    this.getProfileImage();
+    this.cdr.detectChanges();
   }
 
   ngAfterViewInit() {
-      this.getProfileImage();
-      this.cdr.detectChanges();
 
   }
 
@@ -34,11 +33,8 @@ export class EditarUsuarioComponent implements OnInit, AfterViewInit {
     const timestamp = new Date().getTime();
     const imageUrl = `http://localhost:3000/users/${this.userId}/profileImage?timestamp=${timestamp}`;
  
-    if(this.profileImage == './rotas backend/uploads'){
-      this.profileImage = './assets/jhon/padrao.png'
-    }else{
-      this.profileImage = imageUrl; // Atribui novamente a URL com o timestamp atualizado
-    }
+    this.profileImage = imageUrl; // Atribui novamente a URL com o timestamp atualizado
+    localStorage.setItem('profileImagem', this.profileImage);
   }
 
   getCurrentTimestamp() {
