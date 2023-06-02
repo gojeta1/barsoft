@@ -1,0 +1,52 @@
+table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  td {
+    padding: 8px;
+    color: #000000;
+  }
+  
+  th {
+    background-color: #236116;
+    border-radius: 10px;
+    box-shadow: 0px -1px 5px #282c3300;
+  }
+
+  h1{
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 3.2em;
+    line-height: 48px;
+    padding-bottom: 48px;
+       color: #236116;
+      background: #236116;
+      background: -moz-linear-gradient(left,#569e5c  0%,#236116 100%) !important;
+      background: -webkit-linear-gradient(left,#569e5c  0%,#236116 100%) !important;
+      background: linear-gradient(to right,#569e5c  0%,#236116  100%) !important;
+      -webkit-background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+  }
+
+  .edit-button,
+  .delete-button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+  }
+  
+  .edit-button {
+    color: #000000; /* cor do ícone de editar */
+  }
+  .edit-button:hover {
+    transform: scale(1.1);
+  }
+  .delete-button {
+    color: #000000; /* cor do ícone de excluir */
+  }
+
+  .delete-button:hover {
+    transform: scale(1.1);
+  }
