@@ -1,0 +1,33 @@
+.btn-custom{
+    background-image: linear-gradient(125deg,#569e5c,#236116);
+    display: inline-block;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 10px;
+    transition: background-color 0.1s ease;
+    width:100px;
+}
+
+.btn-custom:hover{
+    background-image: linear-gradient(125deg,#7ef369,#569e5c);
+    transform: scale(1.1);
+}
+
+.btn-custom2{
+    background-image: linear-gradient(125deg, #393939, #070606);
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 10px;
+    transition: background-color 0.2s ease;
+}
+
+.btn-custom2:hover{
+    background-image: linear-gradient(125deg, #5c5a5a, #302e2e);
+    transform: scale(1.1);
+}
