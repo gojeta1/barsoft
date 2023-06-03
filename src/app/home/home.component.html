@@ -1,12 +1,12 @@
 <div class="container-fluid">
   <div class="row">
       <div class="col-md-2">
-        <div class="sidebar">
+        <div class="sidebar" *ngIf="isAuthenticated()">
           <app-sidebar></app-sidebar>
         </div>
       </div>
       <div class="col-md-9" > 
-        <div class="content">
+        <div class="content" *ngIf="isAuthenticated()">
           <router-outlet name="main"></router-outlet>
         </div>
       </div>
