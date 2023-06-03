@@ -12,28 +12,31 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 export class EditarUsuarioComponent implements OnInit, AfterViewInit {
   profileImage: string = '';
   selectedFile: File | null = null;
-  userId: number;
+  userId: any;
   isProfileImageUpdated: any;
 
 
 
-  constructor(private http: HttpClient, private route: ActivatedRoute, private authenticationService: AuthenticationService, private cdr: ChangeDetectorRef) {this.userId = this.authenticationService.getUserId()}
+  constructor(private http: HttpClient, private route: ActivatedRoute, private authenticationService: AuthenticationService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    this.getProfileImage();
-    this.cdr.detectChanges();
+    
   }
 
   ngAfterViewInit() {
-
+    this.userId = localStorage.getItem('userId')
+    this.getProfileImage();
+    this.cdr.detectChanges();
   }
 
 
   getProfileImage() {
     const timestamp = new Date().getTime();
     const imageUrl = `http://localhost:3000/users/${this.userId}/profileImage?timestamp=${timestamp}`;
- 
+    
+
     this.profileImage = imageUrl; // Atribui novamente a URL com o timestamp atualizado
+    localStorage.setItem('userId', this.userId);
     localStorage.setItem('profileImagem', this.profileImage);
   }
 
