@@ -10,9 +10,10 @@
           <div class="dropdown col-md-6">
               <ul class="nav nav-pills flex-column mb-auto">
                   <li class="">
-                      <a class="align-items-center justify-content-center text-white" id="dropdownUser1"  aria-expanded="false">
-                          <label>Olá, {{nomeUsuario}}</label>
-                        </a>   
+                        <div class="saudacao">
+                          <span class="ola me-1">Olá,</span>
+                          <span class="nome-usuario ">{{ nomeUsuario }}</span>
+                        </div>
                         <div class="sidebar-footer mt-3">
                           <a >
                             <i class="fa fa-bell"></i>
@@ -22,7 +23,7 @@
                             <i class="fa fa-cog "></i>
                             <span class="badge-sonar me-2"></span>
                           </a>
-                          <a >
+                          <a (click)="logout()" type="button">
                             <i class="fa-solid fa-right-to-bracket"></i>
                           </a>
                         </div>
