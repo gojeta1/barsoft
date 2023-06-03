@@ -4,9 +4,10 @@ const bodyParser = require('body-parser');
 const app = express();
 const cors = require('cors');
 const multer = require('multer');
-
+const jwt = require('jsonwebtoken');
 const path = require('path');
-
+const crypto = require('crypto');
+const bcrypt = require('bcrypt');
 app.use(cors());
 // Configurando o body-parser
 app.use(bodyParser.json());
@@ -21,6 +22,14 @@ const connection = mysql.createConnection({
   password: 'Chuva281180',
   database: 'dbsoft'
 });
+
+function generateToken(user) {
+  const payload = { id: user.id };
+  const secretKey = crypto.randomBytes(32).toString('hex');;
+  const options = { expiresIn: '1h' }; // Define o tempo de expiração do token
+
+  return jwt.sign(payload, secretKey, options);
+}
 
 // Conectando ao banco de dados
 connection.connect(function(err) {
@@ -55,6 +64,7 @@ const upload = multer({ storage: storage, fileFilter: fileFilter });
 // Endpoint para atualizar o caminho da imagem de perfil do usuário
 app.put('/users/:id/profileImage', upload.single('profileImage'), (req, res) => {
   const userId = req.params.id;
+  
    // Verifique se o arquivo de imagem foi enviado corretamente
    if (!req.file) {
     res.status(400).json({ error: 'Nenhum arquivo de imagem enviado' });
@@ -106,7 +116,7 @@ app.get('/users/:id/profileImage', (req, res) => {
 // Criando a rota de login
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
-  
+
 
   if (!username || !password) {
     res.status(400).json({ message: 'Por favor, preencha todos os campos' });
@@ -114,7 +124,7 @@ app.post('/login', (req, res) => {
   }
   
   // Consultando o banco de dados
-  connection.query('SELECT * FROM users WHERE username = ? AND password = ?', [username, password], function(err, results, fields) {
+  connection.query('SELECT * FROM users WHERE username = ? ', [username], function(err, results, fields) {
     if (err) {
       console.log('Erro ao consultar banco de dados:',err);
       res.status(500).json({ message: 'Erro ao autenticar' });
@@ -123,11 +133,27 @@ app.post('/login', (req, res) => {
       const user = results[0]; // Aqui você armazena o primeiro usuário retornado na constante "user"
       const nomeUsuario = user.NOME; // Aqui você obtém o nome do usuário
       const userId = user.ID;
-      res.status(200);
-      res.json({ success: true,  message: 'Login Realizado com sucesso', nomeUsuario: nomeUsuario, userId: userId});
+      const hashArmazenada = user.PASSWORD;
+      bcrypt.compare(password, hashArmazenada, function(err, result) {
+        if (result) {
+          // Senha válida, o usuário está autenticado
+          const token = generateToken(userId);
+          res.status(200).json({
+            success: true,
+            message: 'Login realizado com sucesso',
+            nomeUsuario: nomeUsuario,
+            userId: userId,
+            token: token
+
+          })
+        } else {
+          // Senha inválida
+          res.status(401).json({message: 'Senhas não conferem'})
+          
+        }
+      });
     } else {
       res.status(401).json({ message: 'Usuário ou senha incorretos' });
-      connection.end();
     }
   });
 });
@@ -165,16 +191,18 @@ app.post('/cadclientes', (req, res) => {
   connection.end();
 });
 
-app.post('/cadusuario', (req, res) => {
+app.post('/cadusuario', async (req, res) => {
   const {id, nome, username, password, token} = req.body;
-
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(password, salt);
+  
   if(!username || !password){
     return res.status(400).json({message: 'Por favor, preencha todos os campos obrigatórios.' });
   }
 
   const query = 'INSERT INTO users (id, nome, username, password, token) VALUES (?, ?, ?, ?, ?)';
 
-  connection.query(query, [id, nome, username, password, token], (err, result) =>{
+  connection.query(query, [id, nome, username, hashedPassword, token], (err, result) =>{
     if(err){
       return res.status(500).json({message: 'Erro interno do servidor'});
     }
