@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { NotificationService } from 'src/app/notification.service';
-
+import { TabelausuariosComponent } from 'src/app/tabelausuarios/tabelausuarios.component';
+import * as bcrypt from 'bcryptjs';
 
 @Component({
   selector: 'app-cadastrousuario',
@@ -23,7 +24,7 @@ usuario = {
   notificationError: any;
   confirmarSenha: any;
 
-  constructor (private http: HttpClient, private notificationService: NotificationService, ){}
+  constructor (private http: HttpClient, private notificationService: NotificationService,private tabelaUsuarios: TabelausuariosComponent ){}
 
   novousuarioForm(){
 
@@ -41,6 +42,7 @@ usuario = {
           token: ''
         };
         this.notificationSuccess = 'Usuário cadastrado com sucesso.';
+        this.tabelaUsuarios.buscarRegistros();
       }
     }, error =>{
 
@@ -56,4 +58,11 @@ usuario = {
     });
 
   }
+
+    gerarHashSenha(senha: string) {
+      const salt = bcrypt.genSaltSync(10);
+      const hash = bcrypt.hashSync(senha, salt);
+
+  }
+  
 }
