@@ -7,14 +7,14 @@
                     <th class="col-md-4 text-white text-center">USERNAME</th>
                     <th class="col-md-4 text-white text-center">NOME</th>
                 </tr>
-                <tr class="" *ngFor="let registro of registros">
+                <tr class="" *ngFor="let registro of registros | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage }">
                     <td class="text-center">{{ registro.ID }}</td>
                     <td class="text-center">{{ registro.USERNAME }}</td>
                     <td class="text-center">{{ registro.NOME }}</td>
                     <td class="text-center">
                         <div class="row">
                             <div class="col-md-2" >
-                                <button class="edit-button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
+                                <button class="edit-button" >
                                     <i class="fas fa-edit"></i>
                                 </button>
                             </div>
@@ -36,5 +36,15 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-6">
+                <button class="new-button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">Novo Usuário</button>
+            </div>
+            <div class="col-md-6">
+                <pagination-controls class="ngx-pagination d-flex justify-content-end" nextText="Próximo" previousLabel="Anterior" (pageChange)="currentPage = $event"></pagination-controls>
+            </div>
+        </div>
+        
+        
 </div>
 
