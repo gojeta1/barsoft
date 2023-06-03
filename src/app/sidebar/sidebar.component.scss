@@ -16,6 +16,21 @@ body {
     overflow-x: auto;
     overflow-y: hidden;
   }
+  .saudacao {
+    font-weight: bold;
+  }
+  
+  .ola {
+    font-size: 14px;
+    color: #ffffff;
+  }
+  
+  .nome-usuario {
+    font-size: 14px;
+    color: #ffffff; /* Cor diferente para o nome do usuário */
+    /* Outros estilos desejados para o nome do usuário */
+  }
+
   
  .sidebar{
   background-image: linear-gradient(125deg,#569e5c,#236116);
