@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { FooterComponent } from './footer/footer.component';
-import {HttpClientModule} from '@angular/common/http'
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http'
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { CadastroclientesComponent } from './cadastros/cadastroclientes/cadastroclientes.component';
@@ -17,6 +17,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { TabelaclientesComponent } from './tabelaclientes/tabelaclientes.component';
 import { TabelausuariosComponent } from './tabelausuarios/tabelausuarios.component';
 import { ConfirmamodalComponent } from './confirmamodal/confirmamodal.component';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { TokenInterceptor } from './token.interceptor';
 
 
 
@@ -43,13 +45,15 @@ export function jwtOptionsFactory() {
      EditarUsuarioComponent,
      TabelaclientesComponent,
      TabelausuariosComponent,
-     ConfirmamodalComponent
+     ConfirmamodalComponent,
+     
 
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    NgxPaginationModule,
     ReactiveFormsModule,
     HttpClientModule,
     JwtModule.forRoot({
@@ -58,10 +62,14 @@ export function jwtOptionsFactory() {
         useFactory: jwtOptionsFactory
       }
     })
-
-    
   ],
-  providers: [JwtHelperService,],
+  
+  providers: [JwtHelperService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
