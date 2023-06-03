@@ -10,18 +10,22 @@ import { Router } from '@angular/router';
 })
 export class SidebarComponent implements OnInit {
 
-  nomeUsuario = '';
+  nomeUsuario : any;
 
   
-  constructor(private authenticationService: AuthenticationService, private http: HttpClient, private router: Router) {this.nomeUsuario = this.authenticationService.getNomeUser()}
+  constructor(private authenticationService: AuthenticationService, private http: HttpClient, private router: Router) {}
 
   navigateTo(option: string) {
     this.router.navigate(['/home', { outlets: { main: [option] } }]);
   }
 
-  ngOnInit() {
-  
+  ngOnInit() :void {
+    this.nomeUsuario = localStorage.getItem('nomeUser');
   }
+
+ logout(){
+  this.authenticationService.logout();
+ }
 
 
 }
