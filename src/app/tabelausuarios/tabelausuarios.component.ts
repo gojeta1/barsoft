@@ -15,7 +15,8 @@ export class TabelausuariosComponent implements OnInit{
   registros: any [] = [];
   registroAtual: any;
   userId: any;
-  
+  currentPage = 1; // Página atual
+  itemsPerPage = 10; // Quantidade de usuários por página
 
   constructor (private http: HttpClient, private authenticationService: AuthenticationService,private userService: UserService,private notificationService: NotificationService){}
 
