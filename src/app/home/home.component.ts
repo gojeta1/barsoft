@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthenticationService } from '../authentication.service';
 
 
 
@@ -12,6 +13,8 @@ import { Component, OnInit } from '@angular/core';
 
 export class HomeComponent{
 
+  constructor(private authenticationService: AuthenticationService){}
+  
   phoneNumber = '+55123456789'; // Número de telefone desejado
   message = 'Olá, gostaria de iniciar uma conversa!';
 
@@ -20,6 +23,9 @@ export class HomeComponent{
     window.open(url, '_blank');
   }
 
+  isAuthenticated(): boolean{
+    return this.authenticationService.isAuthenticatedUser();
+   }
   }
 
  
