@@ -1,16 +1,13 @@
-table {
+.table {
     width: 100%;
     border-collapse: collapse;
+    border-color: #000000 solid;
+    background-color: #236116;
+    border-radius: 5px;
   }
-  
-  td {
-
+  tr{
+    color: #fff;
   }
-  
-  th {
-
-  }
-
   h1{
     text-align: center;
     text-transform: uppercase;
