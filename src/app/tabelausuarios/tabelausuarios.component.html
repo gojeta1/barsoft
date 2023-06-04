@@ -1,9 +1,10 @@
-<div class="container-fluid align-content-center">
-             <h1>Usuários</h1>
-        <div class="table-responsive">
-            <table class="table">
-                <tr>
-                   <!--<th class="col-md-4 text-white text-center">ID</th>--> 
+        
+        <div class="table-responsive-md">
+            <table class="table caption-top">
+                <caption>
+                    <h1>Usuários</h1>
+                </caption>
+                <tr> 
                     <th class="col  text-center">USERNAME</th>
                     <th class="col text-center">NOME</th>
                     <th class="col text-center">EDITAR</th>
@@ -11,7 +12,6 @@
                 </tr>
                 <tbody class="table-group-divider">
                 <tr class="" *ngFor="let registro of registros | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage }">
-                    <!--<td class="text-center">{{ registro.ID }}</td>-->
                     <td class="text-center">{{ registro.USERNAME }}</td>
                     <td class="text-center">{{ registro.NOME }}</td>
                     <td class="text-center">              
@@ -44,7 +44,4 @@
                 <pagination-controls class="ngx-pagination d-flex justify-content-end" nextText="Próximo" previousLabel="Anterior" (pageChange)="currentPage = $event"></pagination-controls>
             </div>
         </div>
-        
-        
-</div>
 
