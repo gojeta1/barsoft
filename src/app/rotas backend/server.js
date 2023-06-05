@@ -188,7 +188,6 @@ app.post('/cadclientes', (req, res) => {
     // Neste exemplo, vamos verificar se o e-mail contém um @
     return email.includes('@');
   }
-  connection.end();
 });
 
 app.post('/cadusuario', async (req, res) => {
@@ -243,6 +242,44 @@ app.delete('/tabelausuarios/:id', (req, res) => {
     if(err){
       console.error(err);
       return res.status(500).json({message: 'Erro ao excluir Usuário'})
+    }else if(result.length > 0){
+      res.status(200).json(result);
+    }
+  })
+  res.sendStatus(204);
+});
+
+app.get('/tabelaclientes', (req, res) => {
+  // Código para buscar todos os registros no banco de dados usando Sequelize
+  const query = 'SELECT * FROM cad_clientes';
+
+  connection.query(query, (err, result) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ message: 'Erro interno do servidor' });
+    }
+    res.status(200).json(result);
+  });
+});
+
+app.put('/tabelaclientes/:id', (req, res) => {
+  const registroAtualizado = req.body;
+  const registroId = req.params.id;
+
+  // Código para atualizar o registro no banco de dados usando Sequelize
+
+  res.json(registroAtualizado);
+});
+
+// Rota para excluir um registro existente
+app.delete('/tabelaclientes/:id', (req, res) => {
+  const registroId = req.params.id;
+  const query = 'DELETE FROM cad_clientes WHERE id = ?'
+  // Código para excluir o registro no banco de dados usando Sequelize
+  connection.query(query, [registroId], (err,result) =>{
+    if(err){
+      console.error(err);
+      return res.status(500).json({message: 'Erro ao excluir Cliente'})
     }else if(result.length > 0){
       res.status(200).json(result);
     }
