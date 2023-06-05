@@ -31,8 +31,10 @@ export class EditarUsuarioComponent implements OnInit, AfterViewInit {
   } else {
     this.profileImage = storedProfileImage;
   }
-    this.getProfileImage();
-    this.cdr.detectChanges();
+    setTimeout(() => {
+      this.getProfileImage();
+      this.cdr.detectChanges();
+    });
   }
 
 
