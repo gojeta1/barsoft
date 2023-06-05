@@ -1,1 +1,53 @@
-<p>tabelaclientes works!</p>
+<div class="table-responsive-md">
+    <table class="table caption-top">
+        <caption>
+            <h1>Clientes</h1>
+        </caption>
+        <tr> 
+            <th class="col  text-center">NOME</th>
+            <th class="col text-center">EMAIL</th>
+            <th class="col text-center">CELULAR</th>
+            <th class="col text-center">RUA</th>
+            <th class="col text-center">BAIRRO</th>
+            <th class="col text-center">NUMERO</th>
+            <th class="col text-center">CEP</th>
+        </tr>
+        <tbody class="table-group-divider">
+        <tr class="" *ngFor="let registro of registros | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage }">
+            <td class="text-center">{{ registro.NOME }}</td>
+            <td class="text-center">{{ registro.EMAIL }}</td>
+            <td class="text-center">{{ registro.CELULAR }}</td>
+            <td class="text-center">{{ registro.RUA }}</td>
+            <td class="text-center">{{ registro.BAIRRO }}</td>
+            <td class="text-center">{{ registro.NUMERO }}</td>
+            <td class="text-center">{{ registro.CEP }}</td>
+            <td class="text-center">              
+                        <button class="edit-button" >
+                            <i class="fas fa-edit"></i>
+                        </button>
+            </td>            
+            <td class="text-center">            
+                        <button class="delete-button" (click)="deleteRegistro(registro.ID, registro.NOME)">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+            </td>
+        </tr>
+     </tbody>
+    </table>
+    <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
+        <button type="button" class="btn-close " data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        <div class="offcanvas-body">
+            <div class="container">
+                <app-cadastroclientes></app-cadastroclientes>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col-md-6">
+        <button class="new-button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">Novo Usuário</button>
+    </div>
+    <div class="col-md-6">
+        <pagination-controls class="ngx-pagination d-flex justify-content-end" nextText="Próximo" previousLabel="Anterior" (pageChange)="currentPage = $event"></pagination-controls>
+    </div>
+</div>
