@@ -12,7 +12,7 @@ app.use(cors());
 // Configurando o body-parser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use('/uploads', express.static('uploads'));
+app.use( express.static('uploads'));
 
 //C:/barsoft/src/app/rotas backend/uploads
 // Configurando a conexão com o banco de dados
@@ -37,82 +37,49 @@ connection.connect(function(err) {
   console.log('Conectado ao banco de dados MySQL!');
 });
 
-const uploadPath = path.join(__dirname, 'uploads');
-
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, uploadPath);
+    cb(null, 'uploads/'); // Pasta onde os arquivos serão salvos
   },
   filename: function (req, file, cb) {
-    const extension = path.extname(file.originalname);
-    cb(null, Date.now() + extension);
+    cb(null, file.originalname);
   }
 });
+const upload = multer({ storage: storage });
 
-const fileFilter = (req, file, cb) => {
-  const allowedExtensions = ['.jpg', '.jpeg', '.png'];
-  const extension = path.extname(file.originalname);
-  if (allowedExtensions.includes(extension.toLowerCase())) {
-    cb(null, true);
-  } else {
-    cb(new Error('Invalid file extension'));
-  }
-};
+// Rota para o upload da foto de perfil
+app.post('/upload', upload.single('profileImage'), (req, res) => {
+  const { filename } = req.file;
+  const userId = req.body.userId; // Supondo que você tenha um campo userId no formulário
 
-const upload = multer({ storage: storage, fileFilter: fileFilter });
-
-// Endpoint para atualizar o caminho da imagem de perfil do usuário
-app.put('/users/:id/profileImage', upload.single('profileImage'), (req, res) => {
-  const userId = req.params.id;
-  
-   // Verifique se o arquivo de imagem foi enviado corretamente
-   if (!req.file) {
-    res.status(400).json({ error: 'Nenhum arquivo de imagem enviado' });
-    return;
-  }
-  const imagePath = req.file.path; // Caminho temporário da imagem enviada pelo usuário
-  res.setHeader('Cache-Control', 'no-cache');
-  const sql = 'UPDATE users SET profile_image = ? WHERE id = ?';
-  connection.query(sql, [imagePath, userId], (err) => {
+  // Atualizar o caminho da imagem no banco de dados
+  const query = `UPDATE users SET profile_image = '${filename}' WHERE id = ${userId}`;
+  connection.query(query, (err, result) => {
     if (err) {
-      console.error('Erro ao atualizar a imagem do perfil:', err);
-      res.status(500).send('Erro ao atualizar a imagem do perfil');
+      console.error(err);
+      res.status(500).json({ error: 'Erro ao atualizar a foto de perfil' });
     } else {
-      res.status(200).send('Imagem do perfil atualizada com sucesso');
+      res.status(200).json({ message: 'Foto de perfil atualizada com sucesso', profileImage: filename });
     }
   });
 });
 
-app.get('/users/:id/profileImage', (req, res) => {
-  const userId = req.params.id;
-  const sql = 'SELECT profile_image FROM users WHERE id = ?';
-  connection.query(sql, [userId], (err, result) => {
-    if (err) {
-      console.error('Erro ao obter a imagem do perfil:', err);
-      res.status(500).send('Erro ao obter a imagem do perfil');
-    } else {
-      if (result.length > 0) {
-        const profileImagePath = path.resolve('./uploads', result[0].profile_image);
+// Rota para obter o caminho da foto de perfil de um usuário
+app.get('/profile/:userId', (req, res) => {
+  const userId = req.params.userId;
 
-        // Verifica se o caminho da imagem do perfil existe
-        if (profileImagePath) {
-          // Retorne a imagem do perfil como resposta
-          res.setHeader('Cache-Control', 'no-store');
-          res.sendFile(profileImagePath);
-        } else {
-          // Caso o caminho da imagem do perfil esteja vazio ou não exista, retorne uma imagem padrão ou uma resposta de erro
-          // Exemplo:
-          // res.sendFile(path.join(__dirname, 'caminho/para/a/imagem/padrao.jpg'));
-          res.status(404).json({ error: 'Imagem do perfil não encontrada' });
-        }
-      } else {
-        // Caso o usuário com o ID fornecido não seja encontrado, retorne uma resposta de erro
-        res.status(404).json({ error: 'Usuário não encontrado' });
-      }
+  // Consultar o caminho da imagem no banco de dados
+  const query = `SELECT profile_image FROM users WHERE id = ${userId}`;
+  connection.query(query, (err, result) => {
+    if (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Erro ao obter o caminho da foto de perfil' });
+    } else {
+      const profileImage = result[0]?.profile_image || 'assets/jhon/padrao.png';
+      res.status(200).json({ profileImage });
     }
   });
 });
-
 // Criando a rota de login
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
