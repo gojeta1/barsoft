@@ -1,5 +1,6 @@
-
-<div>
-  <img [src]="profileImage + '?' + getCurrentTimestamp()" alt="Foto de Perfil" class="rounded-circle" width="100" height="100" type="file">
-  <input id="fileInput" type="file" accept="image/*" (change)="onFileSelected($event);uploadProfileImage()">
+<div class="profile-image-container">
+  <label for="profileImageInput">
+    <img [src]="profileImage" alt="Foto de Perfil" class="profile-image" type="submit">
+    <input type="file" id="profileImageInput" (change)="updateProfileImage($event)">
+  </label>
 </div>
